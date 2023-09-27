@@ -1,0 +1,122 @@
+{
+  "project_info": {
+    "project_number": "527504144105",
+    "firebase_url": "https://chatapp-ae799.firebaseio.com",
+    "project_id": "chatapp-ae799",
+    "storage_bucket": "chatapp-ae799.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527504144105:android:6e28db96b3d84ee543e278",
+        "android_client_info": {
+          "package_name": "com.example.chat_app_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527504144105-scsqd8k9df6h7bougf63jamd05n846al.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9pvuHYJ8w6Yr03JfEiKy8Zi65TpuXT9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527504144105-scsqd8k9df6h7bougf63jamd05n846al.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527504144105:android:42f4ab6dfefe7026",
+        "android_client_info": {
+          "package_name": "com.shakibkhan.sallu.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527504144105-4kpkdcjnqj0a3ina40hgen6sdjajuko2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shakibkhan.sallu.chatapp",
+            "certificate_hash": "193041af134e35fbbefcbe3179d9099c5a02060f"
+          }
+        },
+        {
+          "client_id": "527504144105-gk2b7p5346rnbsma1behsk1jec9663cr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shakibkhan.sallu.chatapp",
+            "certificate_hash": "c142a6b6b25700f8cdfa166b5cbb1d800d0d5147"
+          }
+        },
+        {
+          "client_id": "527504144105-scsqd8k9df6h7bougf63jamd05n846al.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9pvuHYJ8w6Yr03JfEiKy8Zi65TpuXT9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527504144105-scsqd8k9df6h7bougf63jamd05n846al.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527504144105:android:f0d26a68f0a67f37",
+        "android_client_info": {
+          "package_name": "com.shakibkhan.sallu.chatapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527504144105-6aep6ehpilnhkv40s8hn3mir8omr8rvu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shakibkhan.sallu.chatapplication",
+            "certificate_hash": "193041af134e35fbbefcbe3179d9099c5a02060f"
+          }
+        },
+        {
+          "client_id": "527504144105-scsqd8k9df6h7bougf63jamd05n846al.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9pvuHYJ8w6Yr03JfEiKy8Zi65TpuXT9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527504144105-scsqd8k9df6h7bougf63jamd05n846al.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
