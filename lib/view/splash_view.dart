@@ -6,7 +6,7 @@ import 'package:chat_app_flutter/utils/utils.dart';
 import 'package:chat_app_flutter/view_model/services/splash_services.dart';
 import 'package:chat_app_flutter/view_model/splash_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -25,14 +25,13 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    
+
     _splashViewModel = Provider.of<SplashViewModel>(context, listen: false);
     if (_splashViewModel != null) {
       _splashServices.start(context, _splashViewModel!);
     } else {
-      Utils.showFlashBarMessage('Initialize problem', FlasType.error , context);
+      Utils.showFlashBarMessage('Initialize problem', FlasType.error, context);
     }
-    
   }
 
   @override

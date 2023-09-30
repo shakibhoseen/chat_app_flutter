@@ -1,3 +1,4 @@
+import 'package:chat_app_flutter/utils/routes/color_contant.dart';
 import 'package:chat_app_flutter/utils/routes/routes.dart';
 import 'package:chat_app_flutter/utils/routes/routes_name.dart';
 import 'package:chat_app_flutter/view_model/auth_view_model.dart';
@@ -6,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-
   runApp(const MyApp());
 }
 
@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_)=> AuthViewModel()),
-        ChangeNotifierProvider(create: (_)=> SplashViewModel()),
+        ChangeNotifierProvider(create: (_) => AuthViewModel()),
+        ChangeNotifierProvider(create: (_) => SplashViewModel()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -39,8 +39,12 @@ class MyApp extends StatelessWidget {
           //
           // This works for code too, not just values: Most code changes can be
           // tested with just a hot reload.
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+
+          appBarTheme: AppBarTheme(
+            backgroundColor: primaryColor,
+          ),
+          //colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          //useMaterial3: true,
         ),
         initialRoute: RoutesName.splash,
         onGenerateRoute: Routes.generateRoute,

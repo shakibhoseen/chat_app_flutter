@@ -1,5 +1,10 @@
+import 'package:chat_app_flutter/res/components/customTabBar.dart';
+import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
+import 'package:chat_app_flutter/utils/routes/color_contant.dart';
+import 'package:chat_app_flutter/view_model/home/home_tab_index_holder.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -9,6 +14,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  HomeTabIndexHolder indexHolder = HomeTabIndexHolder();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -20,79 +27,94 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     //final userPrefernece = Provider.of<UserViewModel>(context);
     return DefaultTabController(
-      initialIndex: 1,
-      length: 3,
+      length: 4,
+      initialIndex: 0,
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          actions: [
-            InkWell(
-                onTap: () {
-                  // userPrefernece.remove().then((value){
-                  //   Navigator.pushNamed(context, RoutesName.login);
-                  // });
-                },
-                child: const Center(child: Text('Logout'))),
-            const SizedBox(
-              width: 20,
-            )
-          ],
-          bottom: const TabBar(tabs: [
-            Tab(
-              text: 'Home',
-              icon: Icon(
-                Icons.home,
-                color: Colors.green,
-              ),
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            actions: [
+              InkWell(
+                  onTap: () {
+                    // userPrefernece.remove().then((value){
+                    //   Navigator.pushNamed(context, RoutesName.login);
+                    // });
+                  },
+                  child: const Center(child: Text('Logout'))),
+              const SizedBox(
+                width: 20,
+              )
+            ],
+            bottom: TabBar(
+              isScrollable: true,
+              indicatorColor: Colors.white,
+              indicatorWeight: 4,
+              indicatorSize: TabBarIndicatorSize.tab,
+              labelStyle: Constants.customTextStyle(),
+              tabs: [
+                Container(
+                  width: 25,
+                  child: Tab(icon: Icon(Icons.camera)),
+                ),
+                Container(
+                  width: 80,
+                  child: Tab(
+                    child: Row(
+                      children: [
+                        Text(
+                          'Chat',
+                          style: Constants.customTextStyle(),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 85,
+                  child: Tab(
+                    text: 'Chat',
+                  ),
+                ),
+                Container(
+                  width: 85,
+                  child: Tab(
+                    text: 'Chat',
+                  ),
+                ),
+              ],
             ),
-            Tab(
-              text: 'User',
-              icon: Icon(
-                Icons.home,
-                color: Colors.green,
-              ),
-            ),
-            Tab(
-              text: 'Search',
-              icon: Icon(
-                Icons.home,
-                color: Colors.green,
-              ),
-            ),
-          ]),
-        ),
-        body: TabBarView(children: [page(), page(), page()])
-      ),
+          ),
+          body: Column(
+            children: [],
+          )),
     );
   }
 }
 
-
 Widget page() {
-  return  Column(
-          children: [
-            Container(
-              child: const Text('Welcome to homeScreen'),
-            ),
-          
-            addVerticalSpace(20),
-            Container(
-              height: 100,
-              width: 100,
-              decoration: BoxDecoration(
-                color: Color(0xFFEBDDFF),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [BoxShadow(color: Colors.grey, offset: Offset(2, 2), blurRadius: 10)]
-              ),
-              child: const Text('cardColor'),
-            ),
-            addVerticalSpace(20),
-            
-            FloatingActionButton(
-              onPressed: () {},
-              hoverColor: Colors.transparent,
-              child: const Icon(Icons.self_improvement_sharp),
-            ),
-          ],
-        );
+  return Column(
+    children: [
+      Container(
+        child: const Text('Welcome to homeScreen'),
+      ),
+      addVerticalSpace(20),
+      Container(
+        height: 100,
+        width: 100,
+        decoration: BoxDecoration(
+            color: Color(0xFFEBDDFF),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: const [
+              BoxShadow(
+                  color: Colors.grey, offset: Offset(2, 2), blurRadius: 10)
+            ]),
+        child: const Text('cardColor'),
+      ),
+      addVerticalSpace(20),
+      FloatingActionButton(
+        onPressed: () {},
+        hoverColor: Colors.transparent,
+        child: const Icon(Icons.self_improvement_sharp),
+      ),
+    ],
+  );
 }
