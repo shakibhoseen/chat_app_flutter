@@ -1,17 +1,18 @@
-
 import 'package:flutter/material.dart';
 
-Widget addVerticalSpace( double height){
+Widget addVerticalSpace(double height) {
   return SizedBox(
     height: height,
   );
 }
-Widget addHoriztalSpace(double width){
+
+Widget addHoriztalSpace(double width) {
   return SizedBox(
-    height: width,
+    width: width,
   );
 }
-Widget customVerticalDivider({Color color = Colors.grey}){
+
+Widget customVerticalDivider({Color color = Colors.grey}) {
   return VerticalDivider(
     thickness: 1,
     color: color,

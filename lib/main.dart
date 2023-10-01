@@ -2,6 +2,7 @@ import 'package:chat_app_flutter/utils/routes/color_contant.dart';
 import 'package:chat_app_flutter/utils/routes/routes.dart';
 import 'package:chat_app_flutter/utils/routes/routes_name.dart';
 import 'package:chat_app_flutter/view_model/auth_view_model.dart';
+import 'package:chat_app_flutter/view_model/home_view_model.dart';
 import 'package:chat_app_flutter/view_model/splash_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => SplashViewModel()),
+        ChangeNotifierProvider(create: (_) => HomeViewModel()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -43,8 +45,9 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
             backgroundColor: primaryColor,
           ),
-          //colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          //useMaterial3: true,
+
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
         ),
         initialRoute: RoutesName.splash,
         onGenerateRoute: Routes.generateRoute,

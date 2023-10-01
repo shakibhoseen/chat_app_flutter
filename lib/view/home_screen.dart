@@ -2,9 +2,13 @@ import 'package:chat_app_flutter/res/components/customTabBar.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
 import 'package:chat_app_flutter/utils/routes/color_contant.dart';
+import 'package:chat_app_flutter/utils/utils.dart';
 import 'package:chat_app_flutter/view_model/home/home_tab_index_holder.dart';
+import 'package:chat_app_flutter/view_model/home_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -15,77 +19,101 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   HomeTabIndexHolder indexHolder = HomeTabIndexHolder();
+  late HomeViewModel homeViewModel;
 
   @override
   void initState() {
     // TODO: implement initState
 
+    HomeViewModel().getUserDetails(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //final userPrefernece = Provider.of<UserViewModel>(context);
+    homeViewModel = Provider.of<HomeViewModel>(context);
     return DefaultTabController(
       length: 4,
       initialIndex: 0,
       child: Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            actions: [
-              InkWell(
-                  onTap: () {
-                    // userPrefernece.remove().then((value){
-                    //   Navigator.pushNamed(context, RoutesName.login);
-                    // });
-                  },
-                  child: const Center(child: Text('Logout'))),
-              const SizedBox(
-                width: 20,
-              )
-            ],
-            bottom: TabBar(
-              isScrollable: true,
-              indicatorColor: Colors.white,
-              indicatorWeight: 4,
-              indicatorSize: TabBarIndicatorSize.tab,
-              labelStyle: Constants.customTextStyle(),
-              tabs: [
-                Container(
-                  width: 25,
-                  child: Tab(icon: Icon(Icons.camera)),
-                ),
-                Container(
-                  width: 80,
-                  child: Tab(
-                    child: Row(
-                      children: [
-                        Text(
-                          'Chat',
-                          style: Constants.customTextStyle(),
-                        )
-                      ],
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          actions: [
+            PopupMenuButton(
+                color: Colors.amber,
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                      child: InkWell(
+                          onTap: () {
+                            // userPrefernece.remove().then((value){
+                            //   Navigator.pushNamed(context, RoutesName.login);
+                            // });
+                            Utils.showToastMessage('log out');
+                          },
+                          child: Text('Logout')),
                     ),
+                    PopupMenuItem(child: Text('Setting')),
+                    PopupMenuItem(child: Text('Privacy')),
+                  ];
+                }),
+          ],
+          bottom: TabBar(
+            isScrollable: true,
+            indicatorColor: Colors.white,
+            indicatorWeight: 4,
+            indicatorSize: TabBarIndicatorSize.tab,
+            labelColor: Colors.amber,
+            unselectedLabelColor: Colors.tealAccent,
+            labelStyle: Constants.customTextStyle(
+                textSize: TextSize.lg, color: Colors.white),
+            tabs: [
+              Container(
+                width: 25,
+                child: Tab(icon: Icon(Icons.camera_alt_outlined)),
+              ),
+              Container(
+                width: 80,
+                child: Tab(
+                  child: Row(
+                    children: [
+                      Text('Chat', style: GoogleFonts.firaSans(fontSize: 16)),
+                      addHoriztalSpace(7),
+                      Container(
+                        padding: EdgeInsets.all(7),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.green),
+                        child: Text(
+                          '3',
+                          style: GoogleFonts.poppins(fontSize: 12),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-                Container(
-                  width: 85,
-                  child: Tab(
-                    text: 'Chat',
-                  ),
+              ),
+              Container(
+                width: 85,
+                child: Tab(
+                  text: 'Chat',
                 ),
-                Container(
-                  width: 85,
-                  child: Tab(
-                    text: 'Chat',
-                  ),
+              ),
+              Container(
+                width: 85,
+                child: Tab(
+                  text: 'Chat',
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          body: Column(
-            children: [],
-          )),
+        ),
+        body: TabBarView(children: [
+          page(),
+          page(),
+          page(),
+          page(),
+        ]),
+      ),
     );
   }
 }
