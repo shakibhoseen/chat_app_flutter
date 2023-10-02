@@ -12,7 +12,7 @@ class NetworkApiServices extends BaseApiServices {
     try {
       final  dataEvent = await databaseReference.once();
       if(dataEvent.snapshot.value !=null){
-         return dataEvent.snapshot.value;
+         return dataEvent.snapshot;
       }else{
          throw FetchDataException('No Data avilable');
       }
@@ -28,7 +28,7 @@ class NetworkApiServices extends BaseApiServices {
     try {
       final  dataEvent = await databaseReference.child('').once();
       if(dataEvent.snapshot.value !=null){
-         return dataEvent.snapshot.value;
+         return dataEvent.snapshot;
       }else{
          throw FetchDataException('No Data avilable');
       }

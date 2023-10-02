@@ -1,11 +1,15 @@
+import 'package:chat_app_flutter/model/user_model.dart';
 import 'package:chat_app_flutter/respository/home_repository.dart';
 import 'package:chat_app_flutter/utils/routes/routes_name.dart';
 import 'package:chat_app_flutter/utils/utils.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 class HomeViewModel with ChangeNotifier {
   final _myRepo = HomeRepository();
+
+  UserModel ? currentUserModel ;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -23,25 +27,33 @@ class HomeViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getUserDetails(BuildContext context) async {
+  Future<UserModel> getUserDetails(BuildContext context) async {
+    if(currentUserModel!=null) return currentUserModel!;
     setLoading(true);
-
-    _myRepo.getUserData().then((value) {
+    
+    try {
+      final value = await _myRepo.getUserData();
       setLoading(false);
 
-      Utils.showFlashBarMessage(
-          'Login Successfully', FlasType.success, context);
+      // Check if data is a Map and convert it to DataSnapshot if needed
+
+     // Utils.showFlashBarMessage(
+       //   'User details fetch successfully ', FlasType.success, context);
       // Navigator.pushNamed(context, RoutesName.home);
-      if (kDebugMode) {
-        print("k  mood " + value.toString());
-      }
-      print("k  mood  $value");
-    }).onError((error, stackTrace) {
+      currentUserModel = UserModel.fromSnapshot(value);
+      //notifyListeners();
+      Utils.showFlashBarMessage(
+          'User  ${currentUserModel} ', FlasType.success, context);
+
+      return currentUserModel!;
+    } on Exception catch (e) {
       setLoading(false);
-      Utils.showFlashBarMessage(error.toString(), FlasType.error, context);
+      Utils.showFlashBarMessage(e.toString(), FlasType.error, context);
       if (kDebugMode) {
-        print(error.toString());
+        print(e.toString());
       }
-    });
+      return UserModel(
+          search: '', imageUrl: '', id: '', status: '', username: '');
+    }
   }
 }

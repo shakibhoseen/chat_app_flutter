@@ -1,3 +1,5 @@
+import 'package:chat_app_flutter/model/user_model.dart';
+import 'package:chat_app_flutter/res/app_url.dart';
 import 'package:chat_app_flutter/res/components/customTabBar.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
@@ -11,47 +13,77 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  HomeTabIndexHolder indexHolder = HomeTabIndexHolder();
-  late HomeViewModel homeViewModel;
-
-  @override
+ 
+@override
   void initState() {
     // TODO: implement initState
-
-    HomeViewModel().getUserDetails(context);
+   call();
     super.initState();
   }
 
+  
+  void call(){
+    Future.delayed(Duration(microseconds: 10), (){
+ final homeViewModel = Provider.of<HomeViewModel>(context, listen: false);
+     homeViewModel.getUserDetails(context);
+    });
+  }
+  
+
   @override
   Widget build(BuildContext context) {
-    homeViewModel = Provider.of<HomeViewModel>(context);
+    
     return DefaultTabController(
       length: 4,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
+
           automaticallyImplyLeading: false,
+          leading: Consumer<HomeViewModel>(
+            
+            builder: (BuildContext context, HomeViewModel viewModel, Widget? child ) {
+              return Center(
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  width: 40, height: 40,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+
+                  ),
+
+                  child: Image.network(
+                    viewModel.currentUserModel?.imageUrl ?? AppUrl.defaultProfileImageUrl,
+                     fit: BoxFit.cover,),
+                ),
+              );
+            },
+
+
+          ),
+          title: Consumer<HomeViewModel>(
+            builder: (BuildContext context, HomeViewModel value, Widget? child) {
+              return Text("Whats up ${value.currentUserModel?.username}", style: Constants.customTextStyle(textSize: TextSize.lg),);
+              },
+
+          ),
           actions: [
             PopupMenuButton(
                 color: Colors.amber,
                 itemBuilder: (context) {
                   return [
                     PopupMenuItem(
-                      child: InkWell(
-                          onTap: () {
-                            // userPrefernece.remove().then((value){
-                            //   Navigator.pushNamed(context, RoutesName.login);
-                            // });
-                            Utils.showToastMessage('log out');
-                          },
-                          child: Text('Logout')),
+                      onTap: (){
+                        Utils.showToastMessage('log out');
+                      },
+                      child: const Text('Logout'),
                     ),
                     PopupMenuItem(child: Text('Setting')),
                     PopupMenuItem(child: Text('Privacy')),
