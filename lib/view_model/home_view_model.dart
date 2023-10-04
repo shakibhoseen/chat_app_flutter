@@ -53,7 +53,8 @@ class HomeViewModel with ChangeNotifier {
         print(e.toString());
       }
       return UserModel(
-          search: '', imageUrl: '', id: '', status: '', username: '');
+          search: '', imageUrl: '', id: '', status: '', username: '', isActive: false);
     }
   }
+
 }

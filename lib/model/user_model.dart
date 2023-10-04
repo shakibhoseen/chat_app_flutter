@@ -1,5 +1,14 @@
+import 'dart:math';
+
 import 'package:chat_app_flutter/res/app_url.dart';
-import 'package:firebase_database/firebase_database.dart'; // or import the appropriate Firebase package
+import 'package:firebase_database/firebase_database.dart';
+
+class LastMessage {
+  final String lastMessage;
+  final bool isUserSender;
+
+  LastMessage({required this.lastMessage, required this.isUserSender});
+} // or import the appropriate Firebase package
 
 class UserModel {
   final String search;
@@ -7,6 +16,8 @@ class UserModel {
   final String id;
   final String status;
   final String username;
+  final bool isActive;
+  final LastMessage? lastMessage;
 
   UserModel({
     required this.search,
@@ -14,6 +25,8 @@ class UserModel {
     required this.id,
     required this.status,
     required this.username,
+    required this.isActive,
+    this.lastMessage,
   });
 
   factory UserModel.fromSnapshot(DataSnapshot snapshot) {
@@ -26,6 +39,7 @@ class UserModel {
         id: '',
         status: '',
         username: '',
+        isActive: false,
       );
     }
 
@@ -35,8 +49,7 @@ class UserModel {
       id: data['id'] as String? ?? '',
       status: data['status'] as String? ?? '',
       username: data['username'] as String? ?? '',
+      isActive: Random().nextBool(),
     );
   }
-
-
 }

@@ -1,10 +1,12 @@
 import 'package:chat_app_flutter/model/user_model.dart';
 import 'package:chat_app_flutter/res/app_url.dart';
+import 'package:chat_app_flutter/res/components/active_user_design.dart';
 import 'package:chat_app_flutter/res/components/customTabBar.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
 import 'package:chat_app_flutter/utils/routes/color_contant.dart';
 import 'package:chat_app_flutter/utils/utils.dart';
+import 'package:chat_app_flutter/view/page/chat_page.dart';
 import 'package:chat_app_flutter/view_model/home/home_tab_index_holder.dart';
 import 'package:chat_app_flutter/view_model/home_view_model.dart';
 import 'package:flutter/material.dart';
@@ -56,9 +58,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 40, height: 40,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-
+                
                   ),
-
+                
                   child: Image.network(
                     viewModel.currentUserModel?.imageUrl ?? AppUrl.defaultProfileImageUrl,
                      fit: BoxFit.cover,),
@@ -141,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: TabBarView(children: [
           page(),
-          page(),
+          const ChatPage(),
           page(),
           page(),
         ]),
