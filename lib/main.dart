@@ -2,6 +2,7 @@ import 'package:chat_app_flutter/utils/routes/color_contant.dart';
 import 'package:chat_app_flutter/utils/routes/routes.dart';
 import 'package:chat_app_flutter/utils/routes/routes_name.dart';
 import 'package:chat_app_flutter/view_model/auth_view_model.dart';
+import 'package:chat_app_flutter/view_model/home/chat_user_view_model.dart';
 import 'package:chat_app_flutter/view_model/home_view_model.dart';
 import 'package:chat_app_flutter/view_model/splash_view_model.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => SplashViewModel()),
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
+        ChangeNotifierProvider(create: (_) => ChatUserViewModel()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

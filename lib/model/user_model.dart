@@ -4,10 +4,14 @@ import 'package:chat_app_flutter/res/app_url.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class LastMessage {
-  final String lastMessage;
-  final bool isUserSender;
+  String lastMessage;
+  int countMessage;
+  bool isUserSender;
 
-  LastMessage({required this.lastMessage, required this.isUserSender});
+  LastMessage(
+      {required this.lastMessage,
+      required this.isUserSender,
+      required this.countMessage});
 } // or import the appropriate Firebase package
 
 class UserModel {
@@ -17,7 +21,7 @@ class UserModel {
   final String status;
   final String username;
   final bool isActive;
-  final LastMessage? lastMessage;
+  LastMessage? lastMessage;
 
   UserModel({
     required this.search,

@@ -22,59 +22,58 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
- 
-@override
+  @override
   void initState() {
     // TODO: implement initState
-   call();
+    call();
     super.initState();
   }
 
-  
-  void call(){
-    Future.delayed(Duration(microseconds: 10), (){
- final homeViewModel = Provider.of<HomeViewModel>(context, listen: false);
-     homeViewModel.getUserDetails(context);
+  void call() {
+    Future.delayed(Duration(microseconds: 10), () {
+      final homeViewModel = Provider.of<HomeViewModel>(context, listen: false);
+      homeViewModel.getUserDetails(context);
     });
   }
-  
 
   @override
   Widget build(BuildContext context) {
-    
     return DefaultTabController(
       length: 4,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
-
           automaticallyImplyLeading: false,
           leading: Consumer<HomeViewModel>(
-            
-            builder: (BuildContext context, HomeViewModel viewModel, Widget? child ) {
+            builder:
+                (BuildContext context, HomeViewModel viewModel, Widget? child) {
               return Center(
                 child: Container(
                   clipBehavior: Clip.antiAlias,
-                  width: 40, height: 40,
+                  width: 40,
+                  height: 40,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                
                   ),
-                
                   child: Image.network(
-                    viewModel.currentUserModel?.imageUrl ?? AppUrl.defaultProfileImageUrl,
-                     fit: BoxFit.cover,),
+                    viewModel.currentUserModel?.imageUrl ??
+                        AppUrl.defaultProfileImageUrl,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               );
             },
-
-
           ),
           title: Consumer<HomeViewModel>(
-            builder: (BuildContext context, HomeViewModel value, Widget? child) {
-              return Text("Whats up ${value.currentUserModel?.username}", style: Constants.customTextStyle(textSize: TextSize.lg),);
-              },
-
+            builder:
+                (BuildContext context, HomeViewModel value, Widget? child) {
+              print('flutter .... whats app build');
+              return Text(
+                "Whats up ${value.currentUserModel?.username}",
+                style: Constants.customTextStyle(
+                    textSize: TextSize.xl, color: Colors.white),
+              );
+            },
           ),
           actions: [
             PopupMenuButton(
@@ -82,8 +81,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context) {
                   return [
                     PopupMenuItem(
-                      onTap: (){
+                      onTap: () {
                         Utils.showToastMessage('log out');
+                        final home =
+                            Provider.of<HomeViewModel>(context, listen: false);
+                        home.setLoading(false);
                       },
                       child: const Text('Logout'),
                     ),

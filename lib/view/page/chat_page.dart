@@ -4,50 +4,39 @@ import 'package:chat_app_flutter/res/components/active_user_design.dart';
 import 'package:chat_app_flutter/res/components/my_shadow.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:chat_app_flutter/view_model/home/chat_user_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final chatViewModel =
+        Provider.of<ChatUserViewModel>(context, listen: false);
+    Future.delayed(
+      Duration(microseconds: 20),
+      () {
+        chatViewModel.getChatUser(context);
+      },
+    );
     return Column(
       children: [
-        const Center(child: Text('Chat page')),
-        addVerticalSpace(20),
-        itemChat(UserModel(
-            search: '',
-            imageUrl: AppUrl.defaultProfileImageUrl,
-            id: '',
-            status: '',
-            username: 'Maliha',
-            lastMessage:
-                LastMessage(lastMessage: "tme kokn asbe?", isUserSender: true),
-            isActive: true)),
-        itemChat(UserModel(
-            search: '',
-            imageUrl: AppUrl.defaultProfileImageUrl,
-            id: '',
-            status: '',
-            username: 'Ruhan',
-            lastMessage:
-                LastMessage(lastMessage: 'I am here', isUserSender: false),
-            isActive: true)),
-        itemChat(
-          UserModel(
-              search: '',
-              imageUrl: AppUrl.defaultProfileImageUrl,
-              id: '',
-              status: '',
-              username: 'Baba',
-              lastMessage: LastMessage(
-                  lastMessage:
-                      'baba i love you so much, Allah tmk jannat basi korun Ameen ',
-                  isUserSender: true),
-              isActive: false),
+        Consumer<ChatUserViewModel>(
+          builder:
+              (BuildContext context, ChatUserViewModel value, Widget? child) {
+            final list = value.mapUserMsgList;
+            return Expanded(
+              child: ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  return itemChat(list.values.elementAt(index));
+                },
+              ),
+            );
+          },
         ),
       ],
     );
@@ -115,13 +104,13 @@ Widget itemChat(UserModel model) {
                 children: [
                   model.lastMessage!.isUserSender
                       ? const Padding(
-                        padding: EdgeInsets.only(right: 8.0),
-                        child: Icon(
+                          padding: EdgeInsets.only(right: 8.0),
+                          child: Icon(
                             FontAwesomeIcons.check,
                             color: Colors.grey,
                             size: 16,
                           ),
-                      )
+                        )
                       : Container(),
                   Expanded(
                     child: Text(
@@ -133,10 +122,14 @@ Widget itemChat(UserModel model) {
                   ),
                   addHoriztalSpace(20),
                   Container(
-                    padding: const EdgeInsets.all(6),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
+                      shape: BoxShape.rectangle,
                       color: Colors.green,
+                      borderRadius: model.lastMessage != null
+                          ? BorderRadius.circular(28)
+                          : null,
                       border: Border.all(
                           color: Colors.white,
                           style: BorderStyle.solid,
@@ -144,7 +137,7 @@ Widget itemChat(UserModel model) {
                       boxShadow: MyShadow.boxShadow5(),
                     ),
                     child: Text(
-                      '8',
+                      "${model.lastMessage!.countMessage}",
                       style: Constants.customTextStyle(color: Colors.white),
                     ),
                   )
