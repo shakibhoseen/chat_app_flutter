@@ -7,6 +7,7 @@ import 'package:chat_app_flutter/utils/helper_widget.dart';
 import 'package:chat_app_flutter/utils/routes/color_contant.dart';
 import 'package:chat_app_flutter/utils/utils.dart';
 import 'package:chat_app_flutter/view/page/chat_page.dart';
+import 'package:chat_app_flutter/view_model/home/chat_user_view_model.dart';
 import 'package:chat_app_flutter/view_model/home/home_tab_index_holder.dart';
 import 'package:chat_app_flutter/view_model/home_view_model.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.delayed(Duration(microseconds: 10), () {
       final homeViewModel = Provider.of<HomeViewModel>(context, listen: false);
       homeViewModel.getUserDetails(context);
+      final chatViewModel =
+      Provider.of<ChatUserViewModel>(context, listen: false);
+      chatViewModel.getChatUser(context);
     });
   }
 

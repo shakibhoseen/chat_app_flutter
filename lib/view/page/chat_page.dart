@@ -4,6 +4,7 @@ import 'package:chat_app_flutter/res/components/active_user_design.dart';
 import 'package:chat_app_flutter/res/components/my_shadow.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
+import 'package:chat_app_flutter/utils/routes/routes_name.dart';
 import 'package:chat_app_flutter/view_model/home/chat_user_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,14 +15,7 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chatViewModel =
-        Provider.of<ChatUserViewModel>(context, listen: false);
-    Future.delayed(
-      Duration(microseconds: 20),
-      () {
-        chatViewModel.getChatUser(context);
-      },
-    );
+
     return Column(
       children: [
         Consumer<ChatUserViewModel>(
@@ -32,7 +26,12 @@ class ChatPage extends StatelessWidget {
               child: ListView.builder(
                 itemCount: list.length,
                 itemBuilder: (context, index) {
-                  return itemChat(list.values.elementAt(index));
+                  return InkWell(
+                    splashColor: Colors.green.shade200,
+                      onTap: (){
+                        Navigator.pushNamed(context, RoutesName.messageScreen, arguments: {});
+                      },
+                      child: itemChat(list.values.elementAt(index)));
                 },
               ),
             );
@@ -102,7 +101,7 @@ Widget itemChat(UserModel model) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  model.lastMessage!.isUserSender
+                  model.lastMessage==null || model.lastMessage!.isUserSender
                       ? const Padding(
                           padding: EdgeInsets.only(right: 8.0),
                           child: Icon(
@@ -114,7 +113,7 @@ Widget itemChat(UserModel model) {
                       : Container(),
                   Expanded(
                     child: Text(
-                      model.lastMessage!.lastMessage,
+                      model.lastMessage!= null ? model.lastMessage!.lastMessage :  '',
                       style: Constants.customTextStyle(),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -137,7 +136,7 @@ Widget itemChat(UserModel model) {
                       boxShadow: MyShadow.boxShadow5(),
                     ),
                     child: Text(
-                      "${model.lastMessage!.countMessage}",
+                      "${model.lastMessage?.countMessage}",
                       style: Constants.customTextStyle(color: Colors.white),
                     ),
                   )

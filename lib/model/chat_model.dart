@@ -23,7 +23,7 @@ class ChatModel {
       sender: data['sender'] as String? ?? '',
       receiver: data['receiver'] as String? ?? '',
       message: data['message'] as String? ?? "sent photo",
-      isseen: data['isseen'],
+      isseen: data['isseen'] as bool? ?? false,
     );
   }
 }

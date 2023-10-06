@@ -38,7 +38,7 @@ class UserModel {
 
     if (data == null) {
       return UserModel(
-        search: '',
+        search: 'ok',
         imageUrl: AppUrl.defaultProfileImageUrl,
         id: '',
         status: '',
@@ -48,7 +48,7 @@ class UserModel {
     }
 
     return UserModel(
-      search: data['search'] as String ?? '',
+      search: data['search'] as String? ?? 'p',
       imageUrl: data['imageUrl'] as String? ?? AppUrl.defaultProfileImageUrl,
       id: data['id'] as String? ?? '',
       status: data['status'] as String? ?? '',
