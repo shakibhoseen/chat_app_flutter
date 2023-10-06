@@ -29,7 +29,7 @@ class ChatPage extends StatelessWidget {
                   return InkWell(
                     splashColor: Colors.green.shade200,
                       onTap: (){
-                        Navigator.pushNamed(context, RoutesName.messageScreen, arguments: {});
+                        Navigator.pushNamed(context, RoutesName.messageScreen, arguments: {'myId': '', 'otherId': ''});
                       },
                       child: itemChat(list.values.elementAt(index)));
                 },

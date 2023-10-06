@@ -27,7 +27,9 @@ class _MessageHomePageState extends State<MessageHomePage> with SingleTickerProv
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+    appBar: AppBar(
+      
+    ),
       body: Column(
         children: [
           Text('message page my Id ${widget.myId}'),
