@@ -16,6 +16,8 @@ class CoutoClip extends CustomClipper<Path>{
     path.quadraticBezierTo((size.width/2), (size.height-2), size.width, size.height-calculate);
     //path.lineTo(size.width, size.height);
     path.lineTo(topRightX, 0);
+
+
     return path;
   }
 

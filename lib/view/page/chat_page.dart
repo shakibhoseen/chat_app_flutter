@@ -21,7 +21,7 @@ class ChatPage extends StatelessWidget {
         Consumer<ChatUserViewModel>(
           builder:
               (BuildContext context, ChatUserViewModel value, Widget? child) {
-            final list = value.mapUserMsgList;
+            final list = value.mapUserMsg;
             return Expanded(
               child: ListView.builder(
                 itemCount: list.length,
@@ -29,7 +29,7 @@ class ChatPage extends StatelessWidget {
                   return InkWell(
                     splashColor: Colors.green.shade200,
                       onTap: (){
-                        Navigator.pushNamed(context, RoutesName.messageScreen, arguments: {'myId': '', 'otherId': ''});
+                        Navigator.pushNamed(context, RoutesName.messageScreen, arguments: {'myId': '', 'otherId': list.values.elementAt(index).id});
                       },
                       child: itemChat(list.values.elementAt(index)));
                 },

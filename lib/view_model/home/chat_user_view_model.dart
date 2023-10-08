@@ -19,10 +19,12 @@ class ChatUserViewModel extends ChangeNotifier {
   }
 
   List<UserModel> userMessageList = [];
-  List<ChatModel> messageList = [];
+
   List<UserModel> userList = [];
-  Map<String, UserModel> mapUserMsgList =
+  Map<String, UserModel> mapUserMsg =
       {}; // i have put last message inside UserModel.LastMessage
+  Map<String, List<ChatModel>> mapUserCombMsgList =
+  {};  // par user hold all message list
 
   bool _loading = false;
   bool get loading => _loading;
@@ -42,11 +44,11 @@ class ChatUserViewModel extends ChangeNotifier {
         userMessageList.clear();
         event.snapshot.children.forEach((element) {
           UserModel userModel = UserModel.fromSnapshot(element);
-          mapUserMsgList[userModel.id] = userModel;
+          mapUserMsg[userModel.id] = userModel;
           userList.add(userModel);
 
         });
-          print('get chat map ${mapUserMsgList.length}');
+          print('get chat map ${mapUserMsg.length}');
         _readChat();
       });
     } on Exception catch (e) {
@@ -66,12 +68,13 @@ class ChatUserViewModel extends ChangeNotifier {
       reference.onValue.listen((event) {
         print('call');
         if (!event.snapshot.exists) return;
-        messageList.clear();
+        mapUserCombMsgList.clear();
         event.snapshot.children.forEach((element) {
           ChatModel chatModel = ChatModel.fromSnapshot(element);
           if (chatModel.receiver == uId) {
+            chatModel.isSender = false;
             LastMessage? lastMessage =
-                mapUserMsgList[chatModel.sender]!.lastMessage;
+                mapUserMsg[chatModel.sender]!.lastMessage;
             if (lastMessage != null) {
               // update message
               if (!chatModel.isseen) lastMessage.countMessage++;
@@ -80,14 +83,17 @@ class ChatUserViewModel extends ChangeNotifier {
 
             } else {
               // create new
-              mapUserMsgList[chatModel.sender]!.lastMessage = LastMessage(
+              mapUserMsg[chatModel.sender]!.lastMessage = LastMessage(
                   lastMessage: chatModel.message,
                   isUserSender: false,
                   countMessage: chatModel.isseen ? 0 : 1);
             }
+            mapUserCombMsgList[chatModel.sender] ??= [];
+            mapUserCombMsgList[chatModel.sender]?.add(chatModel);
           } else if (chatModel.sender == uId) {
+            chatModel.isSender = true;
             LastMessage? lastMessage =
-                mapUserMsgList[chatModel.receiver]!.lastMessage;
+                mapUserMsg[chatModel.receiver]!.lastMessage;
             if (lastMessage != null) {
               // update message
               if (!chatModel.isseen) lastMessage.countMessage++;
@@ -96,14 +102,16 @@ class ChatUserViewModel extends ChangeNotifier {
               //mapUserMsgList[chatModel.receiver]!.lastMessage = lastMessage;
             } else {
               // create new
-              mapUserMsgList[chatModel.receiver]!.lastMessage = LastMessage(
+              mapUserMsg[chatModel.receiver]!.lastMessage = LastMessage(
                   lastMessage: chatModel.message,
                   isUserSender: true,
                   countMessage: chatModel.isseen ? 0 : 1);
             }
-            print("${mapUserMsgList[chatModel.receiver]!.lastMessage?.lastMessage} - ${chatModel.message}");
+            mapUserCombMsgList[chatModel.receiver] ??= [];
+            mapUserCombMsgList[chatModel.receiver]?.add(chatModel);
+            print("${mapUserMsg[chatModel.receiver]!.lastMessage?.lastMessage} - ${chatModel.message}");
           }
-          messageList.add(chatModel);
+           print('inside operation ${mapUserCombMsgList.length}');
         });
         removeUsersWithoutLastMessage();  // delte other user who not conversation
       });
@@ -117,7 +125,7 @@ class ChatUserViewModel extends ChangeNotifier {
   }
 
   void removeUsersWithoutLastMessage() {
-    mapUserMsgList.removeWhere((userId, userModel) => userModel.lastMessage == null);
+    mapUserMsg.removeWhere((userId, userModel) => userModel.lastMessage == null);
     notifyListeners();
   }
 

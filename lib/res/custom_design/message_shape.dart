@@ -63,6 +63,14 @@ class MessageShape extends StatelessWidget {
     //CoutoClip coutoClip = CoutoClip();
     HexagonalClipper coutoClip = HexagonalClipper();
 
+    return  Card(
+      elevation: 3,
+      shadowColor: Colors.indigo.withOpacity(0.5),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      shape: HexagonalShapeBorder(),
+      child: child,
+    );
+
     return Material(
       //clipBehavior: Clip.antiAlias,
       elevation: elevation,
