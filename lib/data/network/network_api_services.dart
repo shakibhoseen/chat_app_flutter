@@ -5,20 +5,21 @@ import 'package:chat_app_flutter/data/app_excaptions.dart';
 import 'package:chat_app_flutter/data/network/base_api_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class NetworkApiServices extends BaseApiServices {
   @override
-  Future getDataResponse( DatabaseReference databaseReference) async {
+  Future getDataResponse(DatabaseReference databaseReference) async {
     try {
-      final  dataEvent = await databaseReference.once();
-      if(dataEvent.snapshot.value !=null){
-         return dataEvent.snapshot;
-      }else{
-         throw FetchDataException('No Data avilable');
+      final dataEvent = await databaseReference.once();
+      if (dataEvent.snapshot.value != null) {
+        return dataEvent.snapshot;
+      } else {
+        throw FetchDataException('No Data avilable');
       }
-    } on FirebaseException catch(e) {
-        getReadException(e);
-    }on SocketException {
+    } on FirebaseException catch (e) {
+      getReadException(e);
+    } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
   }
@@ -26,15 +27,15 @@ class NetworkApiServices extends BaseApiServices {
   @override
   Future setDataResponse(model, DatabaseReference databaseReference) async {
     try {
-      final  dataEvent = await databaseReference.child('').once();
-      if(dataEvent.snapshot.value !=null){
-         return dataEvent.snapshot;
-      }else{
-         throw FetchDataException('No Data avilable');
+      final dataEvent = await databaseReference.child('').once();
+      if (dataEvent.snapshot.value != null) {
+        return dataEvent.snapshot;
+      } else {
+        throw FetchDataException('No Data avilable');
       }
-    } on FirebaseException catch(e) {
-        getReadException(e);
-    }on SocketException {
+    } on FirebaseException catch (e) {
+      getReadException(e);
+    } on SocketException {
       throw FetchDataException('No Internet Connection');
     }
   }
@@ -68,56 +69,37 @@ class NetworkApiServices extends BaseApiServices {
       getExceptionResponse(e);
     }
   }
-  
-  // @override
-  // Future<Map<StreamSubscription<DatabaseEvent> , dynamic>> getRealTimeResponse(DatabaseReference reference) async {
-  //  try {
-  //     final   dataEvent =  reference.onValue.listen((event) {
-  //       if(event.snapshot.value !=null){
-  //        return {'controller': dataEvent, 'data': event.snapshot.value};
-  //     }else{
-  //        throw FetchDataException('No Data avilable');
-  //     }
-  //     });
-      
-  //   } on FirebaseException catch(e) {
-  //       getReadException(e);
-  //   }on SocketException {
-  //     throw FetchDataException('No Internet Connection');
-  //   }
-  //   return {'controller': '', 'data': ''};
-  // }
-}
 
-void getExceptionResponse(FirebaseAuthException exception) {
-  switch (exception.code) {
-    case 'user-not-found':
-      throw ErrorException('User not found');
+  void getExceptionResponse(FirebaseAuthException exception) {
+    switch (exception.code) {
+      case 'user-not-found':
+        throw ErrorException('User not found');
 
-    case 'wrong-password':
-      throw ErrorException('Wrong passowrd');
+      case 'wrong-password':
+        throw ErrorException('Wrong passowrd');
 
-    case 'user-disabled':
-      throw ErrorException('User disabled');
-    case 'invalid-email':
-      throw ErrorException('User email invalid');
+      case 'user-disabled':
+        throw ErrorException('User disabled');
+      case 'invalid-email':
+        throw ErrorException('User email invalid');
 
-    case 'email-already-in-use':
-      throw ErrorException('Email are already used');
+      case 'email-already-in-use':
+        throw ErrorException('Email are already used');
 
-    case 'weak-password':
-      throw ErrorException('weak password');
-    default:
-      throw FetchDataException(' with server  with status code ${exception.code}');
+      case 'weak-password':
+        throw ErrorException('weak password');
+      default:
+        throw FetchDataException(
+            ' with server  with status code ${exception.code}');
+    }
   }
-}
 
-
-void getReadException(FirebaseException e) {
-   if (e.code == 'PERMISSION_DENIED') {
+  void getReadException(FirebaseException e) {
+    if (e.code == 'PERMISSION_DENIED') {
       // Handle permission denied error
       throw BadRequestException('premission denied');
     } else {
-        throw FetchDataException(' with serverwith status code${e.code}');
+      throw FetchDataException(' with serverwith status code${e.code}');
     }
+  }
 }

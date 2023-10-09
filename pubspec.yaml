@@ -46,6 +46,9 @@ dependencies:
   percent_indicator: ^4.2.3
   font_awesome_flutter: ^10.5.0
   intl: ^0.17.0
+  transparent_image: ^2.0.1
+  image_picker: ^1.0.4
+  firebase_storage: ^11.2.8
 
 dev_dependencies:
   flutter_test:

@@ -1,15 +1,20 @@
+import 'dart:io';
+
 import 'package:chat_app_flutter/model/chat_model.dart';
 import 'package:chat_app_flutter/res/app_url.dart';
 import 'package:chat_app_flutter/res/assets_name.dart';
 import 'package:chat_app_flutter/res/components/my_shadow.dart';
 import 'package:chat_app_flutter/res/custom_design/message_shape.dart';
 import 'package:chat_app_flutter/res/custom_design/whats_app_message_item.dart';
+import 'package:chat_app_flutter/res/image_network.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
 import 'package:chat_app_flutter/utils/routes/color_contant.dart';
 import 'package:chat_app_flutter/view_model/home/chat_user_view_model.dart';
+import 'package:chat_app_flutter/view_model/message/image_controler.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -25,16 +30,19 @@ class MessageHomePage extends StatefulWidget {
 class _MessageHomePageState extends State<MessageHomePage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  late ImageController _imageController;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this);
+    _imageController = ImageController();
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _imageController.dispose();
     super.dispose();
   }
 
@@ -70,7 +78,33 @@ class _MessageHomePageState extends State<MessageHomePage>
                 );
               },
             ),
-            bottomDesign(),
+
+            StreamBuilder<String>(
+              stream: _imageController.getImageState(),
+              builder: (context, snapshot) {
+                return Stack(
+                  alignment: Alignment.bottomLeft,
+                  clipBehavior: Clip.none,
+                  children: [
+                    bottomDesign(_imageController, snapshot.data?? ''),
+                    snapshot.data !='' ? Positioned(
+                            bottom: 60,
+                            child: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Image.file(
+                                  File(snapshot.data ?? ''),
+                                  width: 150,
+                                ),
+                              ),
+                            ),
+                          ): Container(),
+
+
+                  ],
+                );
+              }
+            ),
           ],
         ),
       ),
@@ -78,7 +112,43 @@ class _MessageHomePageState extends State<MessageHomePage>
   }
 }
 
-Widget bottomDesign() {
+Widget bottomDesign(ImageController imageController, String value) {
+  final TextEditingController messageController = TextEditingController();
+  String? selectedImagePath;
+
+  void _pickImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      selectedImagePath = pickedFile.path;
+      imageController.setImageState(selectedImagePath ?? '');
+    }
+    print('pic');
+  }
+
+  void _removePic(){
+    print('remove');
+    imageController.setImageState('');
+  }
+
+  void _sendMessage() {
+    final messageText = messageController.text;
+    if (messageText.isEmpty && selectedImagePath == null) {
+      // Don't send empty messages
+      return;
+    }
+
+    // Send the message with the text and selected image path
+    // You can use the messageText and selectedImagePath variables here
+
+    // Clear the message text field and selected image path
+    messageController.clear();
+    // setState(() {
+    //   selectedImagePath = null;
+    // });
+  }
+
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
     child: Row(
@@ -98,22 +168,31 @@ Widget bottomDesign() {
                 children: [
                   addHoriztalSpace(7),
                   IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.emoji_emotions,
-                      color: Colors.red,
+                    onPressed: () {
+                      if (value == '') {
+
+                        _pickImageFromGallery();
+                      } else {
+                        _removePic();
+                      }
+                    },
+                    icon:  Icon(
+                      value=='' ? Icons.image: Icons.cancel_outlined,
+                      color: Colors.blue,
                     ),
                   ),
                   addHoriztalSpace(6),
                   Expanded(
-                      child: TextField(
-                    style: Constants.customTextStyle(),
-                    decoration: InputDecoration(
-                      hintText: 'message',
-                      hintStyle: Constants.customTextStyle(),
-                      border: InputBorder.none,
+                    child: TextField(
+                      controller: messageController,
+                      style: Constants.customTextStyle(),
+                      decoration: InputDecoration(
+                        hintText: 'Message',
+                        hintStyle: Constants.customTextStyle(),
+                        border: InputBorder.none,
+                      ),
                     ),
-                  )),
+                  ),
                 ],
               ),
             ),
@@ -124,7 +203,7 @@ Widget bottomDesign() {
           width: 50,
           child: FloatingActionButton(
             shape: const CircleBorder(side: BorderSide(color: Colors.white)),
-            onPressed: () {},
+            onPressed: _sendMessage,
             child: const Icon(
               Icons.send,
               color: primaryColor,
@@ -135,6 +214,7 @@ Widget bottomDesign() {
     ),
   );
 }
+
 
 Widget rightMessage(ChatModel model) {
   return Align(
@@ -171,7 +251,7 @@ Widget rightMessage(ChatModel model) {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             model.imageUrl != null && model.imageUrl != ''
-                ? Image.network(model.imageUrl ?? AppUrl.defaultProfileImageUrl)
+                ? ImageNetwork().networkImage(model.imageUrl ?? AppUrl.defaultProfileImageUrl)
                 : Container(
                     width: 10,
                   ),
