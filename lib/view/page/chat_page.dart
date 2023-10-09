@@ -5,7 +5,9 @@ import 'package:chat_app_flutter/res/components/my_shadow.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
 import 'package:chat_app_flutter/utils/routes/routes_name.dart';
+import 'package:chat_app_flutter/utils/utils.dart';
 import 'package:chat_app_flutter/view_model/home/chat_user_view_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +31,12 @@ class ChatPage extends StatelessWidget {
                   return InkWell(
                     splashColor: Colors.green.shade200,
                       onTap: (){
-                        Navigator.pushNamed(context, RoutesName.messageScreen, arguments: {'myId': '', 'otherId': list.values.elementAt(index).id});
+                        final id = FirebaseAuth.instance.currentUser?.uid;
+                        if(id==null) {
+                          Utils.showToastMessage('Authentication problem');
+                          return;
+                        }
+                        Navigator.pushNamed(context, RoutesName.messageScreen, arguments: {'myId': id, 'otherId': list.values.elementAt(index).id});
                       },
                       child: itemChat(list.values.elementAt(index)));
                 },

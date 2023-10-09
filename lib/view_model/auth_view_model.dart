@@ -37,7 +37,7 @@ class AuthViewModel with ChangeNotifier {
       
       
 
-      Utils.showFlashBarMessage('Login Successfully', FlasType.error, context);
+      //Utils.showFlashBarMessage('Login Successfully', FlasType.error, context);
       Navigator.pushNamed(context, RoutesName.home);
       if(kDebugMode){
         print(value.toString());
@@ -60,7 +60,7 @@ class AuthViewModel with ChangeNotifier {
 
     _myRepo.signUpApi(data['email'], data['password']).then((value){
       setSignUpLoading(false);
-      Utils.showFlashBarMessage('SignUp Successfully', FlasType.success, context);
+      //Utils.showFlashBarMessage('SignUp Successfully', FlasType.success, context);
       Navigator.pushNamed(context, RoutesName.home);
       if(kDebugMode){
         print(value.toString());

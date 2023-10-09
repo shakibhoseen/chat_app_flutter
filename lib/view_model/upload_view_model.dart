@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -13,21 +12,26 @@ class UploadViewModel extends ChangeNotifier {
     final ref = FirebaseStorage.instance.ref().child("chatimages/image1.jpg");
 
     try {
-      final task =
-          await ref.putFile(File(filePath)).snapshotEvents.listen((event) {
+       final task =  ref.putFile(File(filePath));
+
+       task.snapshotEvents.listen((event) {
         progress = event.bytesTransferred / event.totalBytes;
+        print('progress---- $progress');
         status = event.state == TaskState.running
             ? UploadStatus.running
             : event.state == TaskState.paused
-                ? UploadStatus.paused
-                : event.state == TaskState.success
-                    ? UploadStatus.success
-                    : event.state == TaskState.canceled
-                        ? UploadStatus.canceled
-                        : UploadStatus.error;
+            ? UploadStatus.paused
+            : event.state == TaskState.success
+            ? UploadStatus.success
+            : event.state == TaskState.canceled
+            ? UploadStatus.canceled
+            : UploadStatus.error;
 
         notifyListeners();
       });
+
+      // Wait for the task to complete
+      await task;
 
       if (status == UploadStatus.success) {
         // File uploaded successfully
@@ -35,6 +39,8 @@ class UploadViewModel extends ChangeNotifier {
         return url;
       } else if (status == UploadStatus.error) {
         // Error occurred during upload
+        return '';
+      }else{
         return '';
       }
     } on FirebaseException catch (e) {
@@ -44,5 +50,9 @@ class UploadViewModel extends ChangeNotifier {
       // Handle no internet connection
       return '';
     }
+
+    // Return null if the upload was canceled or in any other case
+
+    return null;
   }
 }

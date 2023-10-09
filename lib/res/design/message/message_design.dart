@@ -6,58 +6,20 @@ import 'package:chat_app_flutter/res/image_network.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
 import 'package:chat_app_flutter/utils/routes/color_contant.dart';
+import 'package:chat_app_flutter/view_model/home/chat_user_view_model.dart';
 import 'package:chat_app_flutter/view_model/message/image_controler.dart';
 import 'package:chat_app_flutter/view_model/upload_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
-Widget bottomDesign(ImageController imageController, String value, UploadViewModel uploadProvider) {
-  final TextEditingController messageController = TextEditingController();
-  String? selectedImagePath;
-
-  void _pickImageFromGallery() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      selectedImagePath = pickedFile.path;
-      imageController.setImageState(selectedImagePath ?? '');
-    }
-    print('pic');
-  }
-
-  void _removePic() {
-    print('remove');
-    imageController.setImageState('');
-  }
-
-  void _sendMessage() async{
-    final messageText = messageController.text;
-    if (messageText.isEmpty && selectedImagePath == null) {
-      // Don't send empty messages
-      return;
-    }
-
-    String url = imageController.getImageUrl;
-    String? imageUrl;
-    if(url!='' ){
-      print('path $url');
-     imageUrl = await UploadViewModel().uploadImage(url);
-    }
-    print('flutter');
-    print('image url ..........  $imageUrl');
-    print('flutter');
-    // Send the message with the text and selected image path
-    // You can use the messageText and selectedImagePath variables here
-
-    // Clear the message text field and selected image path
-    messageController.clear();
-    // setState(() {
-    //   selectedImagePath = null;
-    // });
-  }
-
+Widget bottomDesign(
+    {required String value,
+    required Function pickImageFromGallery,
+    required Function removePic,
+    required Function sendMessage,
+    required TextEditingController messageController}) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
     child: Row(
@@ -79,9 +41,9 @@ Widget bottomDesign(ImageController imageController, String value, UploadViewMod
                   IconButton(
                     onPressed: () {
                       if (value == '') {
-                        _pickImageFromGallery();
+                        pickImageFromGallery();
                       } else {
-                        _removePic();
+                        removePic();
                       }
                     },
                     icon: Icon(
@@ -101,6 +63,19 @@ Widget bottomDesign(ImageController imageController, String value, UploadViewMod
                       ),
                     ),
                   ),
+                  Consumer<UploadViewModel>(
+                    builder: (context, value, child) {
+                      String text = 'init ';
+                      if (value.status == UploadStatus.running)
+                        text = 'running';
+                      else if (value.status == UploadStatus.success)
+                        text = 'success';
+                      return Text(
+                        '${value.progress} $text',
+                        style: Constants.customTextStyle(textSize: TextSize.sm),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -111,7 +86,9 @@ Widget bottomDesign(ImageController imageController, String value, UploadViewMod
           width: 50,
           child: FloatingActionButton(
             shape: const CircleBorder(side: BorderSide(color: Colors.white)),
-            onPressed: _sendMessage,
+            onPressed: () {
+              sendMessage();
+            },
             child: const Icon(
               Icons.send,
               color: primaryColor,
@@ -123,77 +100,95 @@ Widget bottomDesign(ImageController imageController, String value, UploadViewMod
   );
 }
 
-Widget rightMessage(ChatModel model) {
+Widget rightMessage(ChatModel model, Function resentMessage) {
   return Align(
     alignment: model.isSender ? Alignment.centerRight : Alignment.centerLeft,
     child: Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 240),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: model.isSender ? Colors.red.shade400 : Colors.grey.shade100,
-          image: const DecorationImage(
-              image: AssetImage(
-                AssetsName.darktBg,
-              ),
-              opacity: 0.7,
-              fit: BoxFit.cover),
-          borderRadius: BorderRadius.only(
-              topLeft: model.isSender
-                  ? const Radius.circular(20)
-                  : const Radius.circular(0),
-              topRight: model.isSender
-                  ? const Radius.circular(0)
-                  : const Radius.circular(20),
-              bottomLeft: model.isSender
-                  ? const Radius.circular(20)
-                  : const Radius.circular(12),
-              bottomRight: model.isSender
-                  ? const Radius.circular(12)
-                  : const Radius.circular(20)),
-          boxShadow: MyShadow.boxShadow5(),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            model.imageUrl != null && model.imageUrl != ''
-                ? ImageNetwork().networkImage(
-                    model.imageUrl ?? AppUrl.defaultProfileImageUrl)
-                : Container(
-                    width: 10,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+         if(model.isFailed?? false) IconButton(
+             iconSize: 24,
+             onPressed: () {
+               resentMessage(model);
+             },
+             icon: Icon(
+               Icons.error,
+               color: Colors.red,
+             )),
+          Container(
+            constraints: const BoxConstraints(maxWidth: 240),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color:
+                  model.isSender ? Colors.red.shade400 : Colors.grey.shade100,
+              image: const DecorationImage(
+                  image: AssetImage(
+                    AssetsName.darktBg,
                   ),
-            Flex(
-              mainAxisSize: MainAxisSize.min,
+                  opacity: 0.7,
+                  fit: BoxFit.cover),
+              borderRadius: BorderRadius.only(
+                  topLeft: model.isSender
+                      ? const Radius.circular(20)
+                      : const Radius.circular(0),
+                  topRight: model.isSender
+                      ? const Radius.circular(0)
+                      : const Radius.circular(20),
+                  bottomLeft: model.isSender
+                      ? const Radius.circular(20)
+                      : const Radius.circular(12),
+                  bottomRight: model.isSender
+                      ? const Radius.circular(12)
+                      : const Radius.circular(20)),
+              boxShadow: MyShadow.boxShadow5(),
+            ),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
-              direction:
-                  model.message.length > 18 ? Axis.vertical : Axis.horizontal,
               children: [
-                Text(
-                  model.message,
-                  overflow: TextOverflow.clip,
-                  style: Constants.customTextStyle(color: Colors.black),
-                ),
-                addHoriztalSpace(8),
-                Row(
+                model.imageUrl != null && model.imageUrl != ''
+                    ? ImageNetwork().networkImage(
+                        model.imageUrl ?? AppUrl.defaultProfileImageUrl)
+                    : Container(
+                        width: 10,
+                      ),
+                Flex(
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  direction: model.message.length > 18
+                      ? Axis.vertical
+                      : Axis.horizontal,
                   children: [
-                    const Icon(
-                      FontAwesomeIcons.check,
-                      size: 12,
-                      color: Colors.grey,
-                    ),
                     Text(
-                      '12:04 AM',
-                      style: Constants.customTextStyle(
-                          textSize: TextSize.sm, color: Colors.blueGrey),
+                      model.message,
+                      overflow: TextOverflow.clip,
+                      style: Constants.customTextStyle(color: Colors.black),
+                    ),
+                    addHoriztalSpace(8),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        model.isSend ?? false
+                            ? const Icon(
+                                FontAwesomeIcons.check,
+                                size: 12,
+                                color: Colors.grey,
+                              )
+                            : Container(),
+                        Text(
+                          '12:04 AM',
+                          style: Constants.customTextStyle(
+                              textSize: TextSize.sm, color: Colors.blueGrey),
+                        )
+                      ],
                     )
                   ],
-                )
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     ),
   );

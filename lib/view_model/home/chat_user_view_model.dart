@@ -61,14 +61,16 @@ class ChatUserViewModel extends ChangeNotifier {
   }
 
   void _readChat() {
-    print('read');
+
     DatabaseReference reference =
         FirebaseDatabase.instance.ref().child('Chats');
     try {
       reference.onValue.listen((event) {
-        print('call');
         if (!event.snapshot.exists) return;
+
         mapUserCombMsgList.clear();
+        mapUserMsg.clear();
+
         event.snapshot.children.forEach((element) {
           ChatModel chatModel = ChatModel.fromSnapshot(element);
           if (chatModel.receiver == uId) {
@@ -129,4 +131,23 @@ class ChatUserViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  addOfflineMessage(String id, ChatModel chatModel){
+    if(mapUserCombMsgList[id]==null){
+      print('null not found $id ${mapUserCombMsgList.length}');
+    }else {
+      print("${mapUserCombMsgList[id]?.length} ..... length");
+    }
+    if(mapUserCombMsgList[id]!=null){
+
+      if(mapUserCombMsgList[id]!.isNotEmpty){
+        ChatModel old = mapUserCombMsgList[id]!.last;
+        if(old.id == chatModel.id){
+          mapUserCombMsgList[id]!.removeLast();
+        }
+      }
+    }
+    mapUserCombMsgList[id] ??= [];
+    mapUserCombMsgList[id]?.add(chatModel);
+    notifyListeners();
+  }
 }
