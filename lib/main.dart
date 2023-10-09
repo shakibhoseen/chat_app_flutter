@@ -5,6 +5,7 @@ import 'package:chat_app_flutter/view_model/auth_view_model.dart';
 import 'package:chat_app_flutter/view_model/home/chat_user_view_model.dart';
 import 'package:chat_app_flutter/view_model/home_view_model.dart';
 import 'package:chat_app_flutter/view_model/splash_view_model.dart';
+import 'package:chat_app_flutter/view_model/upload_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SplashViewModel()),
         ChangeNotifierProvider(create: (_) => HomeViewModel()),
         ChangeNotifierProvider(create: (_) => ChatUserViewModel()),
+        ChangeNotifierProvider(create: (_) => UploadViewModel()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -45,11 +47,10 @@ class MyApp extends StatelessWidget {
           // tested with just a hot reload.
 
           appBarTheme: AppBarTheme(
-            backgroundColor: primaryColor,
-            iconTheme: IconThemeData(
-              color: Colors.white,
-            )
-          ),
+              backgroundColor: primaryColor,
+              iconTheme: IconThemeData(
+                color: Colors.white,
+              )),
 
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
