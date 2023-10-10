@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chat_app_flutter/utils/date_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -9,7 +10,8 @@ class UploadViewModel extends ChangeNotifier {
   double progress = 0.0;
 
   Future<String?> uploadImage(String filePath) async {
-    final ref = FirebaseStorage.instance.ref().child("chatimages/image1.jpg");
+    final path = DateCustom().currentTime;
+    final ref = FirebaseStorage.instance.ref().child("chatimages/$path.jpg");
 
     try {
        final task =  ref.putFile(File(filePath));
