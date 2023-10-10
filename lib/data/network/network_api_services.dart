@@ -27,7 +27,7 @@ class NetworkApiServices extends BaseApiServices {
   @override
   Future setDataResponse(model, DatabaseReference databaseReference) async {
     try {
-      final dataEvent = await databaseReference.child('').once();
+      final dataEvent = await databaseReference.child('gu').once();
       if (dataEvent.snapshot.value != null) {
         return dataEvent.snapshot;
       } else {
