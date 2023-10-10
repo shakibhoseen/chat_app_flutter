@@ -105,14 +105,14 @@ Widget designMessage(ChatModel model, Function resentMessage, bool isCompare, in
     children: [
       if(isCompare) showTimeOrNot(before, model.publish),
       if(todayIndicator) Container(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         decoration: BoxDecoration(
           gradient: LinearGradient(
               colors: [Colors.green.shade400, Colors.green.shade700]
           ),
           borderRadius: BorderRadius.circular(8),
           boxShadow: MyShadow.boxShadow5(),
-          image: DecorationImage(
+          image: const DecorationImage(
             image: AssetImage(AssetsName.lightBg),
             fit: BoxFit.cover,
           )
@@ -132,7 +132,7 @@ Widget designMessage(ChatModel model, Function resentMessage, bool isCompare, in
                  onPressed: () {
                    resentMessage(model);
                  },
-                 icon: Icon(
+                 icon: const Icon(
                    Icons.error,
                    color: Colors.red,
                  )),
