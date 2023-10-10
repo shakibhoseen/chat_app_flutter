@@ -76,14 +76,14 @@ class _MessageHomePageState extends State<MessageHomePage>
     String url = _imageController.getImageUrl;
     String? imageUrl;
     if (url != '') {
-      print('path $url');
-      imageUrl = await UploadViewModel().uploadImage(url);
+      imageUrl = url;
     }
 
     MessageViewModel().setMessageToFirebase(
         message: messageText,
         receiver: widget.otherId,
         sender: widget.myId,
+        imageUrl: imageUrl,
         chatUserProvider: chatUserprovider);
 
     // Send the message with the text and selected image path
@@ -169,7 +169,7 @@ class _MessageHomePageState extends State<MessageHomePage>
                             _resendMessage, false, 0, true);
                       }
                       final oldModel = userChats!.elementAt(index - 1);
-                      final newModel = userChats!.elementAt(index);
+                      final newModel = userChats.elementAt(index);
                       bool todayIndicator = false;
                       if (oldModel.timeStamp?.dateCompare == null ||
                           newModel.timeStamp?.dateCompare == null) {

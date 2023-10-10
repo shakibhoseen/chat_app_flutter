@@ -74,7 +74,7 @@ class ChatModel {
       'message': message,
       'receiver': receiver,
       'sender': sender,
-      if (imageUrl != null) 'imageUrl': imageUrl,
+      if (imageUrl != null && imageUrl !='') 'imageUrl': imageUrl,
       'publish': publish,
       //'isSender': isSender,
       //'isSend': isSend,

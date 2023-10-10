@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chat_app_flutter/model/chat_model.dart';
 import 'package:chat_app_flutter/res/app_url.dart';
 import 'package:chat_app_flutter/res/assets_name.dart';
@@ -167,8 +169,9 @@ Widget designMessage(ChatModel model, Function resentMessage, bool isCompare, in
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     model.imageUrl != null && model.imageUrl != ''
-                        ? ImageNetwork().networkImage(
-                            model.imageUrl ?? AppUrl.defaultProfileImageUrl)
+                        ? model.isSend ?? false || model.imageUrl!.contains('http') ? ImageNetwork().networkImage(
+                            model.imageUrl ?? AppUrl.defaultProfileImageUrl) :
+                        Image.file(File(model.imageUrl ??''))
                         : Container(
                             width: 10,
                           ),
