@@ -40,6 +40,7 @@ class HomeViewModel with ChangeNotifier {
      // Utils.showFlashBarMessage(
        //   'User details fetch successfully ', FlasType.success, context);
       // Navigator.pushNamed(context, RoutesName.home);
+      if(value==null) throw Exception('User not found');
       currentUserModel = UserModel.fromSnapshot(value);
       //notifyListeners();
       Utils.showFlashBarMessage(

@@ -18,6 +18,7 @@ class ChatUserViewModel extends ChangeNotifier {
     uId = user?.uid ?? '';
   }
 
+
   List<UserModel> userMessageList = [];
 
   List<UserModel> userList = [];
@@ -69,14 +70,16 @@ class ChatUserViewModel extends ChangeNotifier {
         if (!event.snapshot.exists) return;
 
         mapUserCombMsgList.clear();
-        mapUserMsg.clear();
+        mapUserMsg.forEach((userId, userModel) {
+          userModel.lastMessage = null;
+        });  // clear last message and its counter reset
 
         event.snapshot.children.forEach((element) {
           ChatModel chatModel = ChatModel.fromSnapshot(element);
           if (chatModel.receiver == uId) {
             chatModel.isSender = false;
             LastMessage? lastMessage =
-                mapUserMsg[chatModel.sender]!.lastMessage;
+                mapUserMsg[chatModel.sender]?.lastMessage;
             if (lastMessage != null) {
               // update message
               if (!chatModel.isseen) lastMessage.countMessage++;
@@ -85,7 +88,7 @@ class ChatUserViewModel extends ChangeNotifier {
 
             } else {
               // create new
-              mapUserMsg[chatModel.sender]!.lastMessage = LastMessage(
+              mapUserMsg[chatModel.sender]?.lastMessage = LastMessage(
                   lastMessage: chatModel.message,
                   isUserSender: false,
                   countMessage: chatModel.isseen ? 0 : 1);
@@ -95,7 +98,7 @@ class ChatUserViewModel extends ChangeNotifier {
           } else if (chatModel.sender == uId) {
             chatModel.isSender = true;
             LastMessage? lastMessage =
-                mapUserMsg[chatModel.receiver]!.lastMessage;
+                mapUserMsg[chatModel.receiver]?.lastMessage;
             if (lastMessage != null) {
               // update message
               if (!chatModel.isseen) lastMessage.countMessage++;
@@ -104,16 +107,16 @@ class ChatUserViewModel extends ChangeNotifier {
               //mapUserMsgList[chatModel.receiver]!.lastMessage = lastMessage;
             } else {
               // create new
-              mapUserMsg[chatModel.receiver]!.lastMessage = LastMessage(
+              mapUserMsg[chatModel.receiver]?.lastMessage = LastMessage(
                   lastMessage: chatModel.message,
                   isUserSender: true,
                   countMessage: chatModel.isseen ? 0 : 1);
             }
             mapUserCombMsgList[chatModel.receiver] ??= [];
             mapUserCombMsgList[chatModel.receiver]?.add(chatModel);
-            print("${mapUserMsg[chatModel.receiver]!.lastMessage?.lastMessage} - ${chatModel.message}");
+            //print("${mapUserMsg[chatModel.receiver]!.lastMessage?.lastMessage} - ${chatModel.message}");
           }
-           print('inside operation ${mapUserCombMsgList.length}');
+
         });
         removeUsersWithoutLastMessage();  // delte other user who not conversation
       });

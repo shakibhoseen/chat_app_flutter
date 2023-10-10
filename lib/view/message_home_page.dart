@@ -95,8 +95,8 @@ class _MessageHomePageState extends State<MessageHomePage>
     //   selectedImagePath = null;
     // });
   }
-  Future<void> _resendMessage(ChatModel chatModel) async {
 
+  Future<void> _resendMessage(ChatModel chatModel) async {
     if (chatModel.message.isEmpty) {
       // Don't send empty messages
       return;
@@ -115,7 +115,6 @@ class _MessageHomePageState extends State<MessageHomePage>
         receiver: chatModel.receiver,
         sender: chatModel.sender,
         chatUserProvider: chatUserprovider);
-
   }
 
   Future<void> addChatMessage() async {
@@ -165,7 +164,22 @@ class _MessageHomePageState extends State<MessageHomePage>
                     controller: _scrollController,
                     itemCount: userChats?.length ?? 0,
                     itemBuilder: (context, index) {
-                      return rightMessage(userChats!.elementAt(index), _resendMessage);
+                      if (index == 0) {
+                        return designMessage(userChats!.elementAt(index),
+                            _resendMessage, false, 0, true);
+                      }
+                      final oldModel = userChats!.elementAt(index - 1);
+                      final newModel = userChats!.elementAt(index);
+                      bool todayIndicator = false;
+                      if (oldModel.timeStamp?.dateCompare == null ||
+                          newModel.timeStamp?.dateCompare == null) {
+                        todayIndicator = false;
+                      } else if (oldModel.timeStamp?.dateCompare !=
+                          newModel.timeStamp?.dateCompare) {
+                        todayIndicator = true;
+                      }
+                      return designMessage(newModel, _resendMessage, true,
+                          oldModel.publish, todayIndicator);
                     },
                   ),
                 );
@@ -244,32 +258,4 @@ Widget leftMessage(ChatModel model) {
       ],
     ),
   );
-}
-
-String formatTimestampWithTime(DateTime timestamp) {
-  final now = DateTime.now();
-  final yesterday = DateTime(now.year, now.month, now.day - 1);
-  final oneWeekAgo = DateTime(now.year, now.month, now.day - 7);
-
-  String formattedDate;
-  String formattedTime;
-
-  if (timestamp.isAfter(now.subtract(const Duration(days: 1)))) {
-    // Less than one day ago
-    formattedDate = 'Today';
-  } else if (timestamp.isAfter(yesterday)) {
-    // Yesterday
-    formattedDate = 'Yesterday';
-  } else if (timestamp.isAfter(oneWeekAgo)) {
-    // Within one week, return the day of the week
-    formattedDate = DateFormat('EEEE').format(timestamp);
-  } else {
-    // More than one week ago, return the date in the format 'dd-MM-yyyy'
-    formattedDate = DateFormat('dd-MM-yyyy').format(timestamp);
-  }
-
-  // Format time as hours:minutes AM/PM
-  formattedTime = DateFormat.jm().format(timestamp);
-
-  return '$formattedDate $formattedTime';
 }

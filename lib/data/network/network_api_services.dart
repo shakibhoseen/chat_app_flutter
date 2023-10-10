@@ -27,12 +27,8 @@ class NetworkApiServices extends BaseApiServices {
   @override
   Future setDataResponse(model, DatabaseReference databaseReference) async {
     try {
-      final dataEvent = await databaseReference.child('gu').once();
-      if (dataEvent.snapshot.value != null) {
-        return dataEvent.snapshot;
-      } else {
-        throw FetchDataException('No Data avilable');
-      }
+       await databaseReference.set(model);
+
     } on FirebaseException catch (e) {
       getReadException(e);
     } on SocketException {
