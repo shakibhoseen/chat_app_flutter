@@ -146,7 +146,7 @@ Widget designMessage(ChatModel model, Function resentMessage, bool isCompare, in
                       model.isSender ? Colors.red.shade400 : Colors.grey.shade100,
                   image: const DecorationImage(
                       image: AssetImage(
-                        AssetsName.darktBg,
+                        AssetsName.darkBg,
                       ),
                       opacity: 0.7,
                       fit: BoxFit.cover),

@@ -27,8 +27,7 @@ class NetworkApiServices extends BaseApiServices {
   @override
   Future setDataResponse(model, DatabaseReference databaseReference) async {
     try {
-       await databaseReference.set(model);
-
+      await databaseReference.set(model);
     } on FirebaseException catch (e) {
       getReadException(e);
     } on SocketException {

@@ -19,8 +19,6 @@ class ChatUserViewModel extends ChangeNotifier {
   }
 
 
-  List<UserModel> userMessageList = [];
-
   List<UserModel> userList = [];
   Map<String, UserModel> mapUserMsg =
       {}; // i have put last message inside UserModel.LastMessage
@@ -42,7 +40,7 @@ class ChatUserViewModel extends ChangeNotifier {
     try {
       reference.onValue.listen((event) {
         if (!event.snapshot.exists) return;
-        userMessageList.clear();
+        userList.clear();
         event.snapshot.children.forEach((element) {
           UserModel userModel = UserModel.fromSnapshot(element);
           mapUserMsg[userModel.id] = userModel;
@@ -97,6 +95,16 @@ class ChatUserViewModel extends ChangeNotifier {
             mapUserCombMsgList[chatModel.sender]?.add(chatModel);
           } else if (chatModel.sender == uId) {
             chatModel.isSender = true;
+            if(mapUserMsg[chatModel.receiver] ==null){
+              for (var element in userList) {
+                if (element.id == chatModel.receiver) {
+                  mapUserMsg[chatModel.receiver] = element;
+                  break;  // Use the break statement to exit the loop
+                }
+              }
+            }
+            print('inside read chat ${mapUserMsg[chatModel.receiver]}');
+
             LastMessage? lastMessage =
                 mapUserMsg[chatModel.receiver]?.lastMessage;
             if (lastMessage != null) {

@@ -7,9 +7,12 @@ import 'package:chat_app_flutter/utils/helper_widget.dart';
 import 'package:chat_app_flutter/utils/routes/color_contant.dart';
 import 'package:chat_app_flutter/utils/utils.dart';
 import 'package:chat_app_flutter/view/page/chat_page.dart';
+import 'package:chat_app_flutter/view/page/profile_page.dart';
+import 'package:chat_app_flutter/view/page/user_page.dart';
 import 'package:chat_app_flutter/view_model/home/chat_user_view_model.dart';
 import 'package:chat_app_flutter/view_model/home/home_tab_index_holder.dart';
 import 'package:chat_app_flutter/view_model/home_view_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,11 +34,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void call() {
-    Future.delayed(Duration(microseconds: 10), () {
+    Future.delayed(const Duration(microseconds: 10), () {
       final homeViewModel = Provider.of<HomeViewModel>(context, listen: false);
       homeViewModel.getUserDetails(context);
       final chatViewModel =
-      Provider.of<ChatUserViewModel>(context, listen: false);
+          Provider.of<ChatUserViewModel>(context, listen: false);
       chatViewModel.getChatUser(context);
     });
   }
@@ -44,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
-      initialIndex: 0,
+      initialIndex: 1,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -71,9 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Consumer<HomeViewModel>(
             builder:
                 (BuildContext context, HomeViewModel value, Widget? child) {
-              print('flutter .... whats app build');
               return Text(
-                "Whats up ${value.currentUserModel?.username}",
+                "Whats up ",
                 style: Constants.customTextStyle(
                     textSize: TextSize.xl, color: Colors.white),
               );
@@ -89,12 +91,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         Utils.showToastMessage('log out');
                         final home =
                             Provider.of<HomeViewModel>(context, listen: false);
-                        home.setLoading(false);
+                        home.logOut(context);
                       },
                       child: const Text('Logout'),
                     ),
-                    PopupMenuItem(child: Text('Setting')),
-                    PopupMenuItem(child: Text('Privacy')),
+                    const PopupMenuItem(child: Text('Setting')),
+                    const PopupMenuItem(child: Text('Privacy')),
                   ];
                 }),
           ],
@@ -110,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
             tabs: [
               Container(
                 width: 25,
-                child: Tab(icon: Icon(Icons.camera_alt_outlined)),
+                child: const Tab(icon: Icon(Icons.camera_alt_outlined)),
               ),
               Container(
                 width: 80,
@@ -120,8 +122,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text('Chat', style: GoogleFonts.firaSans(fontSize: 16)),
                       addHoriztalSpace(7),
                       Container(
-                        padding: EdgeInsets.all(7),
-                        decoration: BoxDecoration(
+                        padding: const EdgeInsets.all(7),
+                        decoration: const BoxDecoration(
                             shape: BoxShape.circle, color: Colors.green),
                         child: Text(
                           '3',
@@ -134,14 +136,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Container(
                 width: 85,
-                child: Tab(
-                  text: 'Chat',
+                child: const Tab(
+                  text: 'Users',
                 ),
               ),
               Container(
                 width: 85,
-                child: Tab(
-                  text: 'Chat',
+                child: const Tab(
+                  text: 'Profile',
                 ),
               ),
             ],
@@ -150,8 +152,8 @@ class _HomeScreenState extends State<HomeScreen> {
         body: TabBarView(children: [
           page(),
           const ChatPage(),
-          page(),
-          page(),
+          const UserPage(),
+          const ProfilePage(),
         ]),
       ),
     );
@@ -160,29 +162,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
 Widget page() {
   return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Container(
-        child: const Text('Welcome to homeScreen'),
-      ),
-      addVerticalSpace(20),
-      Container(
-        height: 100,
-        width: 100,
-        decoration: BoxDecoration(
-            color: Color(0xFFEBDDFF),
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: const [
-              BoxShadow(
-                  color: Colors.grey, offset: Offset(2, 2), blurRadius: 10)
-            ]),
-        child: const Text('cardColor'),
-      ),
-      addVerticalSpace(20),
-      FloatingActionButton(
-        onPressed: () {},
-        hoverColor: Colors.transparent,
-        child: const Icon(Icons.self_improvement_sharp),
-      ),
+      Center(
+        child: SizedBox(
+          height: 100,
+          width: 100,
+          child: Icon(
+            Icons.camera_alt_outlined,
+            color: Colors.grey,
+            size: 100,
+          ),
+        ),
+      )
     ],
   );
 }

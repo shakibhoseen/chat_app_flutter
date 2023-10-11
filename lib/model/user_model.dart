@@ -56,4 +56,24 @@ class UserModel {
       isActive: Random().nextBool(),
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'search': search,
+      'imageUrl': 'default',
+      'id': id,
+      'status': status,
+      'username': username,
+    };
+  }
+
+  UserModel cloneWithNewId(String newId) {
+    return UserModel(
+        search: search,
+        imageUrl: imageUrl,
+        id: newId,
+        status: status,
+        username: username,
+        isActive: isActive);
+  }
 }

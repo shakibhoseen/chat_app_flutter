@@ -2,6 +2,7 @@ import 'package:chat_app_flutter/model/user_model.dart';
 import 'package:chat_app_flutter/respository/home_repository.dart';
 import 'package:chat_app_flutter/utils/routes/routes_name.dart';
 import 'package:chat_app_flutter/utils/utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/foundation.dart';
 class HomeViewModel with ChangeNotifier {
   final _myRepo = HomeRepository();
 
-  UserModel ? currentUserModel ;
+  UserModel? currentUserModel;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -28,24 +29,20 @@ class HomeViewModel with ChangeNotifier {
   }
 
   Future<UserModel> getUserDetails(BuildContext context) async {
-    if(currentUserModel!=null) return currentUserModel!;
+    if (currentUserModel != null) return currentUserModel!;
     setLoading(true);
-    
+
     try {
       final value = await _myRepo.getUserData();
-      setLoading(false);
 
       // Check if data is a Map and convert it to DataSnapshot if needed
 
-     // Utils.showFlashBarMessage(
-       //   'User details fetch successfully ', FlasType.success, context);
+      // Utils.showFlashBarMessage(
+      //   'User details fetch successfully ', FlasType.success, context);
       // Navigator.pushNamed(context, RoutesName.home);
-      if(value==null) throw Exception('User not found');
+      if (value == null) throw Exception('User not found');
       currentUserModel = UserModel.fromSnapshot(value);
-      //notifyListeners();
-      Utils.showFlashBarMessage(
-          'User  ${currentUserModel} ', FlasType.success, context);
-
+      setLoading(false);
       return currentUserModel!;
     } on Exception catch (e) {
       setLoading(false);
@@ -54,8 +51,18 @@ class HomeViewModel with ChangeNotifier {
         print(e.toString());
       }
       return UserModel(
-          search: '', imageUrl: '', id: '', status: '', username: '', isActive: false);
+          search: '',
+          imageUrl: '',
+          id: '',
+          status: '',
+          username: '',
+          isActive: false);
     }
   }
 
+  void logOut(BuildContext context) {
+    FirebaseAuth.instance.signOut();
+    Navigator.popUntil(context, (route) => false);
+    Navigator.pushNamed(context, RoutesName.login);
+  }
 }
