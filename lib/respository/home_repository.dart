@@ -10,7 +10,6 @@ class HomeRepository {
   Future<dynamic> getUserData() async {
     var user = SplashServices.user;
 
-    print('user repository ..... $user');
     user ??= FirebaseAuth.instance.currentUser;
     if (user == null) {
       return;

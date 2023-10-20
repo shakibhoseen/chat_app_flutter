@@ -7,11 +7,12 @@ class LastMessage {
   String lastMessage;
   int countMessage;
   bool isUserSender;
-
+  int publish;
   LastMessage(
       {required this.lastMessage,
       required this.isUserSender,
-      required this.countMessage});
+      required this.countMessage,
+      required this.publish});
 } // or import the appropriate Firebase package
 
 class UserModel {

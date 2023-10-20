@@ -23,7 +23,7 @@ Widget bottomDesign(
     required Function sendMessage,
     required TextEditingController messageController}) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
+    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
     child: Row(
       children: [
         Expanded(
@@ -102,48 +102,56 @@ Widget bottomDesign(
   );
 }
 
-Widget designMessage(ChatModel model, Function resentMessage, bool isCompare, int before, bool todayIndicator) {
+Widget designMessage(ChatModel model, Function resentMessage, bool isCompare,
+    int before, bool todayIndicator) {
   return Column(
     children: [
-      if(isCompare) showTimeOrNot(before, model.publish),
-      if(todayIndicator) Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [Colors.green.shade400, Colors.green.shade700]
+      if (isCompare) showTimeOrNot(before, model.publish),
+      if (todayIndicator)
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [Colors.green.shade400, Colors.green.shade700]),
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: MyShadow.boxShadow5(),
+              image: const DecorationImage(
+                image: AssetImage(AssetsName.lightBg),
+                fit: BoxFit.cover,
+              )),
+          child: Text(
+            '${model.timeStamp?.dateCompare}',
+            style: Constants.customTextStyle(
+                textSize: TextSize.sm, fontWeight: FontWeight.w600),
           ),
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: MyShadow.boxShadow5(),
-          image: const DecorationImage(
-            image: AssetImage(AssetsName.lightBg),
-            fit: BoxFit.cover,
-          )
         ),
-        child: Text('${model.timeStamp?.dateCompare}', style: Constants.customTextStyle(textSize: TextSize.sm,  fontWeight: FontWeight.w600),),
-      ),
-      if(todayIndicator) addVerticalSpace(20),
+      if (todayIndicator) addVerticalSpace(20),
       Align(
-        alignment: model.isSender ? Alignment.centerRight : Alignment.centerLeft,
+        alignment:
+            model.isSender ? Alignment.centerRight : Alignment.centerLeft,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 2),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-             if(model.isFailed?? false) IconButton(
-                 iconSize: 24,
-                 onPressed: () {
-                   resentMessage(model);
-                 },
-                 icon: const Icon(
-                   Icons.error,
-                   color: Colors.red,
-                 )),
+              if (model.isFailed ?? false)
+                IconButton(
+                    iconSize: 24,
+                    onPressed: () {
+                      resentMessage(model);
+                    },
+                    icon: const Icon(
+                      Icons.error,
+                      color: Colors.red,
+                    )),
               Container(
                 constraints: const BoxConstraints(maxWidth: 240),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color:
-                      model.isSender ? Colors.red.shade400 : Colors.grey.shade100,
+                  color: model.isSender
+                      ? Colors.red.shade400
+                      : Colors.grey.shade100,
                   image: const DecorationImage(
                       image: AssetImage(
                         AssetsName.darkBg,
@@ -169,9 +177,11 @@ Widget designMessage(ChatModel model, Function resentMessage, bool isCompare, in
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     model.imageUrl != null && model.imageUrl != ''
-                        ? model.isSend ?? false || model.imageUrl!.contains('http') ? ImageNetwork().networkImage(
-                            model.imageUrl ?? AppUrl.defaultProfileImageUrl) :
-                        Image.file(File(model.imageUrl ??''))
+                        ? model.isSend ??
+                                false || model.imageUrl!.contains('http')
+                            ? ImageNetwork().networkImage(
+                                model.imageUrl ?? AppUrl.defaultProfileImageUrl)
+                            : Image.file(File(model.imageUrl ?? ''))
                         : Container(
                             width: 10,
                           ),
@@ -201,7 +211,8 @@ Widget designMessage(ChatModel model, Function resentMessage, bool isCompare, in
                             Text(
                               '${model.timeStamp?.hourMinute}',
                               style: Constants.customTextStyle(
-                                  textSize: TextSize.sm, color: Colors.blueGrey),
+                                  textSize: TextSize.sm,
+                                  color: Colors.blueGrey),
                             )
                           ],
                         )
@@ -219,11 +230,12 @@ Widget designMessage(ChatModel model, Function resentMessage, bool isCompare, in
 }
 
 Widget showTimeOrNot(int before, int after) {
-
   int difference = (before - after).abs();
 
-  if (difference < 3600000) { // Less than an hour
-    if (difference < 600000) { // Less than 10 minutes
+  if (difference < 3600000) {
+    // Less than an hour
+    if (difference < 600000) {
+      // Less than 10 minutes
       return addVerticalSpace(3); // Tiny
     } else {
       return addVerticalSpace(24); // Mid-sized
@@ -232,5 +244,3 @@ Widget showTimeOrNot(int before, int after) {
     return addVerticalSpace(32); // Big
   }
 }
-
-

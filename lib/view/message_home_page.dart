@@ -1,19 +1,20 @@
 import 'dart:io';
 
 import 'package:chat_app_flutter/model/chat_model.dart';
+import 'package:chat_app_flutter/model/user_model.dart';
+import 'package:chat_app_flutter/res/app_url.dart';
 import 'package:chat_app_flutter/res/assets_name.dart';
 import 'package:chat_app_flutter/res/components/my_shadow.dart';
 import 'package:chat_app_flutter/res/design/message/message_design.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
 import 'package:chat_app_flutter/view_model/home/chat_user_view_model.dart';
+import 'package:chat_app_flutter/view_model/home_view_model.dart';
 import 'package:chat_app_flutter/view_model/message/image_controler.dart';
 import 'package:chat_app_flutter/view_model/message/message_view_model.dart';
-import 'package:chat_app_flutter/view_model/upload_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class MessageHomePage extends StatefulWidget {
@@ -140,7 +141,46 @@ class _MessageHomePageState extends State<MessageHomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        centerTitle: false,
+        title: FutureBuilder<UserModel>(
+          builder: (context, snapshot) {
+            return Row(
+              children: [
+                Container(
+                  clipBehavior: Clip.antiAlias,
+                  width: 40,
+                  height: 40,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: snapshot.data?.imageUrl != 'default'
+                      ? Image.network(
+                          snapshot.data?.imageUrl ??
+                              AppUrl.defaultProfileImageUrl,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          AssetsName.profileBg,
+                          fit: BoxFit.cover,
+                        ),
+                ),
+                addHoriztalSpace(10),
+                Text(
+                  snapshot.data?.username ?? '',
+                  style: Constants.customTextStyle(
+                      color: Colors.white,
+                      textSize: TextSize.xl,
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            );
+          },
+          future: Provider.of<ChatUserViewModel>(context, listen: false)
+              .getUniqueUserData(widget.otherId),
+        ),
+      ),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -161,6 +201,7 @@ class _MessageHomePageState extends State<MessageHomePage>
                 addChatMessage();
                 return Expanded(
                   child: ListView.builder(
+                    padding: EdgeInsets.only(bottom: 8),
                     controller: _scrollController,
                     itemCount: userChats?.length ?? 0,
                     itemBuilder: (context, index) {
