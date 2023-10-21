@@ -60,8 +60,8 @@ class MessageViewModel {
   }
 
   void setSeenMessage(ChatModel model) async {
-    final repository = MessageRepository();
     if (model.isseen) return;
+    final repository = MessageRepository();
     final change = model.changeIsSeen();
     await repository.setMessage(change);
   }

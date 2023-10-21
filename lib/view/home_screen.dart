@@ -62,11 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                   ),
-                  child: Image.network(
-                    viewModel.currentUserModel?.imageUrl ??
-                        AppUrl.defaultProfileImageUrl,
-                    fit: BoxFit.cover,
-                  ),
+                  child:
+                      Utils.profileImage(viewModel.currentUserModel?.imageUrl),
                 ),
               );
             },
@@ -121,14 +118,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Text('Chat', style: GoogleFonts.firaSans(fontSize: 16)),
                       addHoriztalSpace(7),
-                      Container(
-                        padding: const EdgeInsets.all(7),
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.green),
-                        child: Text(
-                          '3',
-                          style: GoogleFonts.poppins(fontSize: 12),
-                        ),
+                      Consumer<ChatUserViewModel>(
+                        builder: (BuildContext context, ChatUserViewModel value,
+                            Widget? child) {
+                          final int count = value.actualNotificationCount();
+                          if (count == 0) return Container();
+                          return Container(
+                            padding: const EdgeInsets.all(7),
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.green),
+                            child: Text(
+                              '$count',
+                              style: GoogleFonts.poppins(fontSize: 12),
+                            ),
+                          );
+                        },
                       )
                     ],
                   ),

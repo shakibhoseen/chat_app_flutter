@@ -1,4 +1,3 @@
-import 'package:chat_app_flutter/res/app_url.dart';
 import 'package:chat_app_flutter/utils/date_custom.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -11,8 +10,7 @@ class TimeStamp {
   factory TimeStamp.fromDatePublish(int time) {
     final data = DateCustom().formatTimestampWithTime(time);
     return TimeStamp(
-        dateCompare: data['dateCompare'] ?? 'today',
-        hourMinute: data['hourMinute'] ?? '09:09');
+        dateCompare: data.dateCompare, hourMinute: data.hourMinute);
   }
 }
 

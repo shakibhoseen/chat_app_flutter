@@ -1,12 +1,12 @@
 import 'package:intl/intl.dart';
 
-class DateCustom{
+class DateCustom {
   get currentTime => DateTime.now().millisecondsSinceEpoch;
   DateTime dateTime(int timestamp) {
     return DateTime.fromMillisecondsSinceEpoch(timestamp);
   }
 
-  Map<String, String> formatTimestampWithTime(int time) {
+  CustomDateHourMin formatTimestampWithTime(int time) {
     DateTime timestamp = dateTime(time);
     final now = DateTime.now();
     final yesterday = DateTime(now.year, now.month, now.day - 1);
@@ -32,7 +32,13 @@ class DateCustom{
     // Format time as hours:minutes AM/PM
     formattedTime = DateFormat.jm().format(timestamp);
 
-    return {'dateCompare': formattedDate ,'hourMinute': formattedTime};
+    return CustomDateHourMin(
+        dateCompare: formattedDate, hourMinute: formattedTime);
   }
+}
 
+class CustomDateHourMin {
+  final String dateCompare;
+  final String hourMinute;
+  CustomDateHourMin({required this.dateCompare, required this.hourMinute});
 }

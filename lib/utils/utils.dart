@@ -1,17 +1,17 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:another_flushbar/flushbar_route.dart';
+import 'package:chat_app_flutter/res/assets_name.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 enum FlasType { error, success }
 
 class Utils {
-
   static fieldFocusChanged(
-      BuildContext context,
-      FocusNode currentNode,
-      FocusNode nextNode,
-      ){
+    BuildContext context,
+    FocusNode currentNode,
+    FocusNode nextNode,
+  ) {
     currentNode.unfocus();
     FocusScope.of(context).requestFocus(nextNode);
   }
@@ -42,5 +42,16 @@ class Utils {
         )..show(context));
   }
 
-
+  static Widget profileImage(String? imageUrl) {
+    if (imageUrl == null || imageUrl == 'default' || imageUrl == '') {
+      return Image.asset(
+        AssetsName.profileBg,
+        fit: BoxFit.cover,
+      );
+    }
+    return Image.network(
+      imageUrl,
+      fit: BoxFit.cover,
+    );
+  }
 }

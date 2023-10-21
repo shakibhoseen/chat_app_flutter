@@ -67,6 +67,11 @@ class _MessageHomePageState extends State<MessageHomePage>
     });
   }
 
+  void _seenMessage(ChatModel model) {
+    if (model.isSender) return;
+    MessageViewModel().setSeenMessage(model);
+  }
+
   void _sendMessage() async {
     final messageText = messageController.text;
     if (messageText.isEmpty && selectedImagePath == null) {
@@ -205,6 +210,7 @@ class _MessageHomePageState extends State<MessageHomePage>
                     controller: _scrollController,
                     itemCount: userChats?.length ?? 0,
                     itemBuilder: (context, index) {
+                      _seenMessage(userChats!.elementAt(index));
                       if (index == 0) {
                         return designMessage(userChats!.elementAt(index),
                             _resendMessage, false, 0, true);
@@ -263,40 +269,40 @@ class _MessageHomePageState extends State<MessageHomePage>
   }
 }
 
-Widget leftMessage(ChatModel model) {
-  return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-    decoration: BoxDecoration(
-      color: Colors.grey.shade100,
-      borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(12),
-          bottomLeft: Radius.circular(12),
-          bottomRight: Radius.circular(12)),
-      boxShadow: MyShadow.boxShadow5(),
-    ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          model.message,
-          style: Constants.customTextStyle(color: Colors.black),
-        ),
-        addHoriztalSpace(8),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(
-              FontAwesomeIcons.check,
-              size: 12,
-              color: Colors.grey,
-            ),
-            Text(
-              '12:04 AM',
-              style: Constants.customTextStyle(textSize: TextSize.sm),
-            )
-          ],
-        )
-      ],
-    ),
-  );
-}
+// Widget leftMessage(ChatModel model) {
+//   return Container(
+//     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+//     decoration: BoxDecoration(
+//       color: Colors.grey.shade100,
+//       borderRadius: const BorderRadius.only(
+//           topRight: Radius.circular(12),
+//           bottomLeft: Radius.circular(12),
+//           bottomRight: Radius.circular(12)),
+//       boxShadow: MyShadow.boxShadow5(),
+//     ),
+//     child: Row(
+//       mainAxisSize: MainAxisSize.min,
+//       children: [
+//         Text(
+//           model.message,
+//           style: Constants.customTextStyle(color: Colors.black),
+//         ),
+//         addHoriztalSpace(8),
+//         Row(
+//           mainAxisSize: MainAxisSize.min,
+//           children: [
+//             const Icon(
+//               FontAwesomeIcons.check,
+//               size: 12,
+//               color: Colors.grey,
+//             ),
+//             Text(
+//               '12:04 AM',
+//               style: Constants.customTextStyle(textSize: TextSize.sm),
+//             )
+//           ],
+//         )
+//       ],
+//     ),
+//   );
+// }
