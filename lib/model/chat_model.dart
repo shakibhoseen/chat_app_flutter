@@ -2,18 +2,20 @@ import 'package:chat_app_flutter/res/app_url.dart';
 import 'package:chat_app_flutter/utils/date_custom.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-class TimeStamp{
+class TimeStamp {
   final String dateCompare;
   final String hourMinute;
 
   TimeStamp({required this.dateCompare, required this.hourMinute});
-  
-  factory TimeStamp.fromDatePublish(int time){
+
+  factory TimeStamp.fromDatePublish(int time) {
     final data = DateCustom().formatTimestampWithTime(time);
-    return TimeStamp(dateCompare: data['dateCompare']?? 'today', hourMinute: data['hourMinute']?? '09:09');
+    return TimeStamp(
+        dateCompare: data['dateCompare'] ?? 'today',
+        hourMinute: data['hourMinute'] ?? '09:09');
   }
-  
 }
+
 class ChatModel {
   final String id;
   final bool isseen;
@@ -26,7 +28,7 @@ class ChatModel {
   bool? isSend;
   bool? isFailed; // that indicate that from collect the online not only offline
   TimeStamp? timeStamp;
-  
+
   ChatModel(
       {required this.id,
       required this.isseen,
@@ -37,20 +39,21 @@ class ChatModel {
       required this.publish,
       this.imageUrl,
       this.isSend,
-      this.isFailed, this.timeStamp});
+      this.isFailed,
+      this.timeStamp});
 
   factory ChatModel.fromSnapshot(DataSnapshot snapshot) {
     final data = snapshot.value as Map?;
     final time = DateCustom().currentTime;
     if (data == null) {
       return ChatModel(
-          id: "",
-          isseen: false,
-          message: '',
-          receiver: '',
-          sender: '',
-          isSender: true,
-          publish: time,
+        id: "",
+        isseen: false,
+        message: '',
+        receiver: '',
+        sender: '',
+        isSender: true,
+        publish: time,
       );
     }
     final senderId = data['sender'] as String? ?? '';
@@ -74,10 +77,27 @@ class ChatModel {
       'message': message,
       'receiver': receiver,
       'sender': sender,
-      if (imageUrl != null && imageUrl !='') 'imageUrl': imageUrl,
+      if (imageUrl != null && imageUrl != '') 'imageUrl': imageUrl,
       'publish': publish,
       //'isSender': isSender,
       //'isSend': isSend,
+    };
+  }
+
+  ChatModel changeIsSeen() {
+    return ChatModel(
+        id: id,
+        isseen: true,
+        message: message,
+        receiver: receiver,
+        sender: sender,
+        isSender: isSender,
+        publish: publish);
+  }
+
+  Map<String, dynamic> toSeenMap() {
+    return {
+      'isseen': isseen,
     };
   }
 }

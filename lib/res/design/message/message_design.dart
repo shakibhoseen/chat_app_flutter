@@ -202,11 +202,17 @@ Widget designMessage(ChatModel model, Function resentMessage, bool isCompare,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             model.isSend ?? false
-                                ? const Icon(
-                                    FontAwesomeIcons.check,
-                                    size: 12,
-                                    color: Colors.grey,
-                                  )
+                                ? model.isseen
+                                    ? const Icon(
+                                        FontAwesomeIcons.checkDouble,
+                                        size: 12,
+                                        color: Colors.green,
+                                      )
+                                    : const Icon(
+                                        FontAwesomeIcons.check,
+                                        size: 12,
+                                        color: Colors.grey,
+                                      )
                                 : Container(),
                             Text(
                               '${model.timeStamp?.hourMinute}',
