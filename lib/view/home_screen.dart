@@ -1,18 +1,11 @@
-import 'package:chat_app_flutter/model/user_model.dart';
-import 'package:chat_app_flutter/res/app_url.dart';
-import 'package:chat_app_flutter/res/components/active_user_design.dart';
-import 'package:chat_app_flutter/res/components/customTabBar.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
-import 'package:chat_app_flutter/utils/routes/color_contant.dart';
 import 'package:chat_app_flutter/utils/utils.dart';
 import 'package:chat_app_flutter/view/page/chat_page.dart';
 import 'package:chat_app_flutter/view/page/profile_page.dart';
 import 'package:chat_app_flutter/view/page/user_page.dart';
 import 'package:chat_app_flutter/view_model/home/chat_user_view_model.dart';
-import 'package:chat_app_flutter/view_model/home/home_tab_index_holder.dart';
 import 'package:chat_app_flutter/view_model/home_view_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -62,11 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                   ),
-                  child: Image.network(
-                    viewModel.currentUserModel?.imageUrl ??
-                        AppUrl.defaultProfileImageUrl,
-                    fit: BoxFit.cover,
-                  ),
+                  child:
+                      Utils.profileImage(viewModel.currentUserModel?.imageUrl),
                 ),
               );
             },
@@ -74,10 +64,18 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Consumer<HomeViewModel>(
             builder:
                 (BuildContext context, HomeViewModel value, Widget? child) {
-              return Text(
-                "Whats up ",
-                style: Constants.customTextStyle(
-                    textSize: TextSize.xl, color: Colors.white),
+              return Row(
+                children: [
+                  Text(
+                    value.currentUserModel?.username ??'',
+                    style: Constants.customTextStyle(
+                        textSize: TextSize.xl,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  addHoriztalSpace(6),
+                  Icon(FontAwesomeIcons.whatsapp),
+                ],
               );
             },
           ),
@@ -118,17 +116,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: 80,
                 child: Tab(
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text('Chat', style: GoogleFonts.firaSans(fontSize: 16)),
-                      addHoriztalSpace(7),
-                      Container(
-                        padding: const EdgeInsets.all(7),
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.green),
-                        child: Text(
-                          '3',
-                          style: GoogleFonts.poppins(fontSize: 12),
-                        ),
+                      Consumer<ChatUserViewModel>(
+                        builder: (BuildContext context, ChatUserViewModel value,
+                            Widget? child) {
+                          final int count = value.actualNotificationCount();
+                          if (count == 0) return Container();
+                          return Row(
+                            children: [
+                              addHoriztalSpace(7),
+                              Container(
+                                padding: const EdgeInsets.all(7),
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.green),
+                                child: Text(
+                                  '$count',
+                                  style: GoogleFonts.poppins(fontSize: 12),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
                       )
                     ],
                   ),

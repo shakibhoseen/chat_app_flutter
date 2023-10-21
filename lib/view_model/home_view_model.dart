@@ -2,6 +2,7 @@ import 'package:chat_app_flutter/model/user_model.dart';
 import 'package:chat_app_flutter/respository/home_repository.dart';
 import 'package:chat_app_flutter/utils/routes/routes_name.dart';
 import 'package:chat_app_flutter/utils/utils.dart';
+import 'package:chat_app_flutter/view_model/services/splash_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,6 +63,8 @@ class HomeViewModel with ChangeNotifier {
 
   void logOut(BuildContext context) {
     FirebaseAuth.instance.signOut();
+    SplashServices.user = null;
+    currentUserModel = null;
     Navigator.popUntil(context, (route) => false);
     Navigator.pushNamed(context, RoutesName.login);
   }

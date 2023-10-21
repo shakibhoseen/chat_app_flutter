@@ -3,12 +3,16 @@ import 'package:chat_app_flutter/res/assets_name.dart';
 import 'package:chat_app_flutter/res/components/active_user_design.dart';
 import 'package:chat_app_flutter/res/components/my_shadow.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
+import 'package:chat_app_flutter/utils/date_custom.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
+import 'package:chat_app_flutter/utils/utils.dart';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 Widget UserItemDesign({required UserModel userModel, isLastMessage = false}) {
+  final time = DateCustom().formatTimestampWithTime(
+      userModel.lastMessage?.publish ?? DateTime.now().microsecondsSinceEpoch);
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 2),
     child: Row(
@@ -25,10 +29,7 @@ Widget UserItemDesign({required UserModel userModel, isLastMessage = false}) {
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
-              child: userModel.imageUrl=='default' ? Image.asset(AssetsName.profileBg, fit: BoxFit.cover,) : Image.network(
-                userModel.imageUrl,
-                fit: BoxFit.cover,
-              ),
+              child: Utils.profileImage(userModel.imageUrl),
             ),
             if (isLastMessage)
               Positioned(
@@ -59,32 +60,30 @@ Widget UserItemDesign({required UserModel userModel, isLastMessage = false}) {
                   ),
                   addHoriztalSpace(20),
                   if (isLastMessage)
-                  Text(
-                    'yesterday',
-                    style: Constants.customTextStyle(
-                        fontWeight: FontWeight.w400, textSize: TextSize.sm),
-                  ),
+                    Text(
+                      time.dateCompare != 'Today'
+                          ? time.dateCompare
+                          : time.hourMinute,
+                      style: Constants.customTextStyle(
+                          fontWeight: FontWeight.w400, textSize: TextSize.sm),
+                    ),
                 ],
               ),
               if (isLastMessage)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    userModel.lastMessage == null ||
-                            userModel.lastMessage!.isUserSender
-                        ? const Padding(
-                            padding: EdgeInsets.only(right: 8.0),
-                            child: Icon(
-                              FontAwesomeIcons.check,
-                              color: Colors.grey,
-                              size: 16,
-                            ),
-                          )
+                    userModel.lastMessage != null
+                        ? msgUserIndentIcon(userModel.lastMessage!)
                         : Container(),
                     Expanded(
                       child: Text(
                         userModel.lastMessage != null
-                            ? userModel.lastMessage!.lastMessage
+                            ? userModel.lastMessage!.lastMessage == ""
+                                ? userModel.lastMessage!.isUserSender
+                                    ? 'You sent Photo'
+                                    : 'sent photo'
+                                : userModel.lastMessage!.lastMessage
                             : '',
                         style: Constants.customTextStyle(),
                         maxLines: 1,
@@ -92,26 +91,8 @@ Widget UserItemDesign({required UserModel userModel, isLastMessage = false}) {
                       ),
                     ),
                     addHoriztalSpace(20),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 1),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        color: Colors.green,
-                        borderRadius: userModel.lastMessage != null
-                            ? BorderRadius.circular(28)
-                            : null,
-                        border: Border.all(
-                            color: Colors.white,
-                            style: BorderStyle.solid,
-                            width: 2),
-                        boxShadow: MyShadow.boxShadow5(),
-                      ),
-                      child: Text(
-                        "${userModel.lastMessage?.countMessage}",
-                        style: Constants.customTextStyle(color: Colors.white),
-                      ),
-                    )
+                    if (isLastMessage)
+                      msgUserCountNumber(userModel.lastMessage!),
                   ],
                 ),
             ],
@@ -120,4 +101,50 @@ Widget UserItemDesign({required UserModel userModel, isLastMessage = false}) {
       ],
     ),
   );
+}
+
+Widget msgUserCountNumber(LastMessage lastMessage) {
+  if (lastMessage.isUserSender || lastMessage.countMessage == 0) {
+    return Container();
+  }
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+    decoration: BoxDecoration(
+      shape: BoxShape.rectangle,
+      color: Colors.green,
+      borderRadius: lastMessage != null ? BorderRadius.circular(28) : null,
+      border:
+          Border.all(color: Colors.white, style: BorderStyle.solid, width: 2),
+      boxShadow: MyShadow.boxShadow5(),
+    ),
+    child: Text(
+      "${lastMessage.countMessage}",
+      style: Constants.customTextStyle(color: Colors.white),
+    ),
+  );
+}
+
+Widget msgUserIndentIcon(LastMessage lastMessage) {
+  if (lastMessage.isUserSender) {
+    // thats  means i sent last message and have many count or not
+    if (lastMessage.countMessage > 0) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 8.0),
+        child: Icon(
+          FontAwesomeIcons.check,
+          color: Colors.grey,
+          size: 16,
+        ),
+      );
+    }
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.0),
+      child: Icon(
+        FontAwesomeIcons.checkDouble,
+        color: Colors.green,
+        size: 16,
+      ),
+    );
+  }
+  return Container();
 }

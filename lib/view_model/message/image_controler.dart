@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:image_picker/image_picker.dart';
+
 class ImageController {
   String _imageUrl = '';
   StreamController<String> valueController = StreamController<String>();
@@ -28,5 +30,19 @@ class ImageController {
 
   void dispose() {
     valueController.close();
+  }
+
+  void pickImageFromGallery() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      final selectedImagePath = pickedFile.path;
+      setImageState(selectedImagePath ?? '');
+    }
+  }
+
+  void removePic() {
+    setImageState('');
   }
 }

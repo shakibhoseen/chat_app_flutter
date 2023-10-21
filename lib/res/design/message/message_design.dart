@@ -65,19 +65,19 @@ Widget bottomDesign(
                       ),
                     ),
                   ),
-                  Consumer<UploadViewModel>(
-                    builder: (context, value, child) {
-                      String text = 'init ';
-                      if (value.status == UploadStatus.running)
-                        text = 'running';
-                      else if (value.status == UploadStatus.success)
-                        text = 'success';
-                      return Text(
-                        '${value.progress} $text',
-                        style: Constants.customTextStyle(textSize: TextSize.sm),
-                      );
-                    },
-                  ),
+                  // Consumer<UploadViewModel>(
+                  //   builder: (context, value, child) {
+                  //     String text = 'init ';
+                  //     if (value.status == UploadStatus.running)
+                  //       text = 'running';
+                  //     else if (value.status == UploadStatus.success)
+                  //       text = 'success';
+                  //     return Text(
+                  //       '${value.progress} $text',
+                  //       style: Constants.customTextStyle(textSize: TextSize.sm),
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
             ),

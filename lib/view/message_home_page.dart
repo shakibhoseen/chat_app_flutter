@@ -4,17 +4,13 @@ import 'package:chat_app_flutter/model/chat_model.dart';
 import 'package:chat_app_flutter/model/user_model.dart';
 import 'package:chat_app_flutter/res/app_url.dart';
 import 'package:chat_app_flutter/res/assets_name.dart';
-import 'package:chat_app_flutter/res/components/my_shadow.dart';
 import 'package:chat_app_flutter/res/design/message/message_design.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
 import 'package:chat_app_flutter/view_model/home/chat_user_view_model.dart';
-import 'package:chat_app_flutter/view_model/home_view_model.dart';
 import 'package:chat_app_flutter/view_model/message/image_controler.dart';
 import 'package:chat_app_flutter/view_model/message/message_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class MessageHomePage extends StatefulWidget {
@@ -37,21 +33,6 @@ class _MessageHomePageState extends State<MessageHomePage>
 
   late ScrollController _scrollController;
 
-  void _removePic() {
-    print('remove');
-    _imageController.setImageState('');
-  }
-
-  void _pickImageFromGallery() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      selectedImagePath = pickedFile.path;
-      _imageController.setImageState(selectedImagePath ?? '');
-    }
-    print('pic');
-  }
 
   @override
   void initState() {
@@ -65,6 +46,11 @@ class _MessageHomePageState extends State<MessageHomePage>
       // Scroll to the end of the list after the frame is built
       _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
     });
+  }
+
+  void _seenMessage(ChatModel model) {
+    if (model.isSender) return;
+    MessageViewModel().setSeenMessage(model);
   }
 
   void _sendMessage() async {
@@ -92,6 +78,7 @@ class _MessageHomePageState extends State<MessageHomePage>
 
     // Clear the message text field and selected image path
     messageController.clear();
+    _imageController.removePic();
     // setState(() {
     //   selectedImagePath = null;
     // });
@@ -205,6 +192,7 @@ class _MessageHomePageState extends State<MessageHomePage>
                     controller: _scrollController,
                     itemCount: userChats?.length ?? 0,
                     itemBuilder: (context, index) {
+                      _seenMessage(userChats!.elementAt(index));
                       if (index == 0) {
                         return designMessage(userChats!.elementAt(index),
                             _resendMessage, false, 0, true);
@@ -236,8 +224,8 @@ class _MessageHomePageState extends State<MessageHomePage>
                       bottomDesign(
                           value: snapshot.data ?? '',
                           messageController: messageController,
-                          pickImageFromGallery: _pickImageFromGallery,
-                          removePic: _removePic,
+                          pickImageFromGallery: _imageController.pickImageFromGallery,
+                          removePic: _imageController.removePic,
                           sendMessage: _sendMessage),
                       snapshot.data != '' && snapshot.data != null
                           ? Positioned(
@@ -263,40 +251,40 @@ class _MessageHomePageState extends State<MessageHomePage>
   }
 }
 
-Widget leftMessage(ChatModel model) {
-  return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-    decoration: BoxDecoration(
-      color: Colors.grey.shade100,
-      borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(12),
-          bottomLeft: Radius.circular(12),
-          bottomRight: Radius.circular(12)),
-      boxShadow: MyShadow.boxShadow5(),
-    ),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          model.message,
-          style: Constants.customTextStyle(color: Colors.black),
-        ),
-        addHoriztalSpace(8),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(
-              FontAwesomeIcons.check,
-              size: 12,
-              color: Colors.grey,
-            ),
-            Text(
-              '12:04 AM',
-              style: Constants.customTextStyle(textSize: TextSize.sm),
-            )
-          ],
-        )
-      ],
-    ),
-  );
-}
+// Widget leftMessage(ChatModel model) {
+//   return Container(
+//     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+//     decoration: BoxDecoration(
+//       color: Colors.grey.shade100,
+//       borderRadius: const BorderRadius.only(
+//           topRight: Radius.circular(12),
+//           bottomLeft: Radius.circular(12),
+//           bottomRight: Radius.circular(12)),
+//       boxShadow: MyShadow.boxShadow5(),
+//     ),
+//     child: Row(
+//       mainAxisSize: MainAxisSize.min,
+//       children: [
+//         Text(
+//           model.message,
+//           style: Constants.customTextStyle(color: Colors.black),
+//         ),
+//         addHoriztalSpace(8),
+//         Row(
+//           mainAxisSize: MainAxisSize.min,
+//           children: [
+//             const Icon(
+//               FontAwesomeIcons.check,
+//               size: 12,
+//               color: Colors.grey,
+//             ),
+//             Text(
+//               '12:04 AM',
+//               style: Constants.customTextStyle(textSize: TextSize.sm),
+//             )
+//           ],
+//         )
+//       ],
+//     ),
+//   );
+// }

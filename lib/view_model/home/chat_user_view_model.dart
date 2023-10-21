@@ -200,4 +200,17 @@ class ChatUserViewModel extends ChangeNotifier {
             username: 'unknown',
             isActive: false);
   }
+
+  int actualNotificationCount() {
+    int count = 0;
+
+    mapUserMsg.forEach((key, value) {
+      if (value.lastMessage?.isUserSender == false) {
+        print(
+            '${value.lastMessage?.isUserSender} --- ${value.lastMessage?.lastMessage}');
+        count += value.lastMessage?.countMessage ?? 0;
+      }
+    });
+    return count;
+  }
 }
