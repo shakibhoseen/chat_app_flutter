@@ -22,10 +22,14 @@ A Flutter chat app clone that leverages Firebase for real-time messaging, using 
 
 Insert GIFs or images showcasing the app's user interface and key features here.
 <div style="display: flex; justify-content: space-between;">
-  <img alt="Image 1" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/ebad49cb-d005-44af-9832-e05314740760" width="300">
-  <img alt="Image 2" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/6b73dd71-9ed0-457e-8d29-9ed519036523" width="300">
-   <img alt="Image 1" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/ebad49cb-d005-44af-9832-e05314740760" width="300">
-  <img alt="Image 2" src="https://github.com/shakibhoseen/simple_flutter_mvvm_movies/assets/61150626/585ae1e9-9643-4fb0-b9bb-7b028d52c6d9" width="300">
+  <img alt="Image 1" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/ebad49cb-d005-44af-9832-e05314740760" width="260">
+  <img alt="Image 2" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/6b73dd71-9ed0-457e-8d29-9ed519036523" width="260">
+   <img alt="Image 1" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/332ce5f0-a58e-4a7c-a681-aec7fd710888" width="260">
+  <img alt="Image 2" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/a1f0ca99-4d78-4739-a5d1-d5ffb9183ebd" width="260">
+  <img alt="Image 2" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/b5385e58-1c12-4b3d-9d55-e80d245047d3" width="260">
+   <img alt="Image 1" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/5be1a490-93bb-4cb2-ae45-5df3eb0ca3e4" width="260">
+  <img alt="Image 2" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/895506f2-c25f-4f78-b782-ddb6a9cc76ef" width="260">
+  <img alt="Select image" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/54bd15ac-b615-4f79-934c-23e0447aa1ca" width='260'>
 </div>
 
 ## Features
