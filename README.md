@@ -1,7 +1,3 @@
-# chat_app_flutter
-
-A new Flutter project.
-
 # Flutter Whats App Clone
 
 A Flutter chat app clone that leverages Firebase for real-time messaging, using Provider for state management, and follows clean code practices. This chat app offers features like authentication, updating profiles, message seen status, message resending, and more.
