@@ -17,6 +17,7 @@
 ## Demo
 
 Insert GIFs or images showcasing the app's user interface and key features here.
+<kbd>
 <div style="display: flex; justify-content: space-between;">
   <img alt="Image 1" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/ebad49cb-d005-44af-9832-e05314740760" width="260">
   <img alt="Image 2" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/6b73dd71-9ed0-457e-8d29-9ed519036523" width="260">
@@ -27,7 +28,7 @@ Insert GIFs or images showcasing the app's user interface and key features here.
   <img alt="Image 2" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/895506f2-c25f-4f78-b782-ddb6a9cc76ef" width="260">
   <img alt="Select image" src="https://github.com/shakibhoseen/chat_app_flutter/assets/61150626/54bd15ac-b615-4f79-934c-23e0447aa1ca" width='260'>
 </div>
-
+</kbd>
 ## Features
 
 - User authentication with Firebase
