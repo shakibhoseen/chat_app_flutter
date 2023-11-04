@@ -2,7 +2,6 @@ import 'package:chat_app_flutter/model/chat_model.dart';
 import 'package:chat_app_flutter/respository/message_repository.dart';
 import 'package:chat_app_flutter/utils/date_custom.dart';
 import 'package:chat_app_flutter/view_model/home/chat_user_view_model.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 import '../upload_view_model.dart';
 

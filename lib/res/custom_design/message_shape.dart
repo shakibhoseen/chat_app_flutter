@@ -1,13 +1,10 @@
-import 'package:chat_app_flutter/res/components/my_shadow.dart';
-import 'package:chat_app_flutter/res/custom_design/cousto_clip.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HexagonalClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
-    final point = Size(10, 7);
-    final radius = 12.0;
+    const point =  Size(10, 7);
+    const radius = 12.0;
 
     final path = Path();
     //path.moveTo(size.width * 0.25 + 2, 0);
@@ -88,7 +85,7 @@ class MessageShape extends StatelessWidget {
 
 class HexagonalShapeBorder extends ShapeBorder {
   //CoutoClip coutoClip = CoutoClip();
-  HexagonalClipper coutoClip = HexagonalClipper();
+  final  coutoClip = HexagonalClipper();
 
   @override
   EdgeInsetsGeometry get dimensions => const EdgeInsets.all(4);

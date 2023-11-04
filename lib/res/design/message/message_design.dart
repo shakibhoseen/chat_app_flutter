@@ -8,13 +8,8 @@ import 'package:chat_app_flutter/res/image_network.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
 import 'package:chat_app_flutter/utils/routes/color_contant.dart';
-import 'package:chat_app_flutter/view_model/home/chat_user_view_model.dart';
-import 'package:chat_app_flutter/view_model/message/image_controler.dart';
-import 'package:chat_app_flutter/view_model/upload_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 
 Widget bottomDesign(
     {required String value,

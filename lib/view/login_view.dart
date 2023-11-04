@@ -9,18 +9,18 @@ class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
 
   @override
-  _LoginViewState createState() => _LoginViewState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
 class _LoginViewState extends State<LoginView> {
 
-  ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
+  final _obsecurePassword = ValueNotifier<bool>(true);
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  FocusNode emailFocusNode = FocusNode();
-  FocusNode passwordFocusNode = FocusNode();
+  final _emailFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
 
   @override
   void dispose() {
@@ -30,8 +30,8 @@ class _LoginViewState extends State<LoginView> {
     _emailController.dispose();
     _passwordController.dispose();
 
-    emailFocusNode.dispose();
-    passwordFocusNode.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
 
     _obsecurePassword.dispose();
 
@@ -57,14 +57,14 @@ class _LoginViewState extends State<LoginView> {
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                focusNode: emailFocusNode,
+                focusNode: _emailFocusNode,
                 decoration: const InputDecoration(
                   hintText: 'Email',
                   labelText: 'Email',
                   prefixIcon: Icon(Icons.alternate_email)
                 ),
                 onFieldSubmitted: (valu){
-                  Utils.fieldFocusChanged(context, emailFocusNode, passwordFocusNode);
+                  Utils.fieldFocusChanged(context, _emailFocusNode, _passwordFocusNode);
                 },
               ),
               ValueListenableBuilder(
@@ -73,7 +73,7 @@ class _LoginViewState extends State<LoginView> {
                     return TextFormField(
                       controller: _passwordController,
                       obscureText: _obsecurePassword.value,
-                      focusNode: passwordFocusNode,
+                      focusNode: _passwordFocusNode,
         
                       obscuringCharacter: "*",
                       decoration: InputDecoration(

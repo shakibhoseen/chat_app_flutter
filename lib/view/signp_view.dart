@@ -12,19 +12,19 @@ class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
 
   @override
-  _SignUpViewState createState() => _SignUpViewState();
+  State<SignUpView> createState() => _SignUpViewState();
 }
 
 class _SignUpViewState extends State<SignUpView> {
-  ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
+  final  _obsecurePassword = ValueNotifier<bool>(true);
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _usernameController = TextEditingController();
+  final  _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _usernameController = TextEditingController();
 
-  FocusNode userFocusNode = FocusNode();
-  FocusNode emailFocusNode = FocusNode();
-  FocusNode passwordFocusNode = FocusNode();
+  final _userFocusNode = FocusNode();
+  final _emailFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
 
   @override
   void dispose() {
@@ -34,9 +34,9 @@ class _SignUpViewState extends State<SignUpView> {
     _emailController.dispose();
     _passwordController.dispose();
 
-    emailFocusNode.dispose();
-    passwordFocusNode.dispose();
-    userFocusNode.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    _userFocusNode.dispose();
 
     _obsecurePassword.dispose();
   }
@@ -59,26 +59,26 @@ class _SignUpViewState extends State<SignUpView> {
             TextFormField(
               controller: _usernameController,
               keyboardType: TextInputType.name,
-              focusNode: userFocusNode,
+              focusNode: _userFocusNode,
               decoration: const InputDecoration(
                   hintText: 'User Name',
                   labelText: 'User Name',
                   prefixIcon: Icon(FontAwesomeIcons.user)),
               onFieldSubmitted: (value) {
-                Utils.fieldFocusChanged(context, userFocusNode, emailFocusNode);
+                Utils.fieldFocusChanged(context, _userFocusNode, _emailFocusNode);
               },
             ),
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              focusNode: emailFocusNode,
+              focusNode: _emailFocusNode,
               decoration: const InputDecoration(
                   hintText: 'Email',
                   labelText: 'Email',
                   prefixIcon: Icon(Icons.alternate_email)),
               onFieldSubmitted: (valu) {
                 Utils.fieldFocusChanged(
-                    context, emailFocusNode, passwordFocusNode);
+                    context, _emailFocusNode, _passwordFocusNode);
               },
             ),
             ValueListenableBuilder(
@@ -87,7 +87,7 @@ class _SignUpViewState extends State<SignUpView> {
                   return TextFormField(
                     controller: _passwordController,
                     obscureText: _obsecurePassword.value,
-                    focusNode: passwordFocusNode,
+                    focusNode: _passwordFocusNode,
                     obscuringCharacter: "*",
                     decoration: InputDecoration(
                       hintText: 'Password',

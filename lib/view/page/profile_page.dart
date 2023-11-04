@@ -1,8 +1,6 @@
-import 'dart:async';
 
 import 'package:chat_app_flutter/model/user_model.dart';
 import 'package:chat_app_flutter/res/app_url.dart';
-import 'package:chat_app_flutter/res/assets_name.dart';
 import 'package:chat_app_flutter/res/components/blur.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
@@ -10,7 +8,6 @@ import 'package:chat_app_flutter/utils/routes/color_contant.dart';
 import 'package:chat_app_flutter/utils/utils.dart';
 import 'package:chat_app_flutter/view_model/home_view_model.dart';
 import 'package:chat_app_flutter/view_model/message/image_controler.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -167,7 +164,7 @@ Object openDialogBox(BuildContext context, UserModel? model) {
                           ),
                           child: Container(
                             clipBehavior: Clip.antiAliasWithSaveLayer,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: Colors
                                   .white, // Background color for the circular border
@@ -175,10 +172,10 @@ Object openDialogBox(BuildContext context, UserModel? model) {
                             child: Utils.profileImage(url, isFile: isFile),
                           ),
                         ),
-                        Positioned(
+                        const Positioned(
                           child: Blur(
                             child: Padding(
-                              padding: const EdgeInsets.all(18.0),
+                              padding: EdgeInsets.all(18.0),
                               child: Icon(
                                 FontAwesomeIcons.penToSquare,
                                 size: 10,
@@ -207,12 +204,12 @@ Widget getTextInput(TextEditingController controller, String hintText) {
     decoration: InputDecoration(
       hintText: hintText,
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(
+        borderSide: const BorderSide(
             strokeAlign: BorderSide.strokeAlignInside, color: Colors.grey),
         borderRadius: BorderRadius.circular(18),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(
+        borderSide: const BorderSide(
             strokeAlign: BorderSide.strokeAlignInside, color: Colors.green),
         borderRadius: BorderRadius.circular(18),
       ),

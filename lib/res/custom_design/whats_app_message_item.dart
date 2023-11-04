@@ -4,7 +4,7 @@ class WhatsAppMessageItem extends StatelessWidget {
   final String messageText;
   final bool isMe;
 
-  WhatsAppMessageItem({required this.messageText, required this.isMe});
+  const WhatsAppMessageItem({required this.messageText, required this.isMe});
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +13,8 @@ class WhatsAppMessageItem extends StatelessWidget {
       child: ClipPath(
         clipper: MyClipper(isMe: true),
         child: Container(
-          padding: EdgeInsets.all(8.0),
-          margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+          padding: const EdgeInsets.all(8.0),
+          margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
           decoration: BoxDecoration(
             color: isMe ? Colors.green : Colors.grey, // Set your desired colors
           ),
@@ -24,7 +24,7 @@ class WhatsAppMessageItem extends StatelessWidget {
             children: [
               Text(
                 messageText,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16.0,
                 ),

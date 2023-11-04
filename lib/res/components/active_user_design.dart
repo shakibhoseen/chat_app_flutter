@@ -1,5 +1,4 @@
 import 'package:chat_app_flutter/res/components/my_shadow.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ActiveUserDesign {
@@ -7,7 +6,7 @@ class ActiveUserDesign {
     return Container(
       decoration: _getDecoration(isActive),
       child: childs ??
-          SizedBox(
+          const SizedBox(
             height: 10,
             width: 10,
           ),

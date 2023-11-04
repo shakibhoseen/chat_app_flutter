@@ -31,7 +31,7 @@ class UserPage extends StatelessWidget {
                         }
                         Navigator.pushNamed(context, RoutesName.messageScreen, arguments: {'myId': id, 'otherId': list.elementAt(index).id});
                       },
-                      child: UserItemDesign(userModel: list.elementAt(index), ));
+                      child: userItemDesign(userModel: list.elementAt(index), ));
                 },
               ),
             );

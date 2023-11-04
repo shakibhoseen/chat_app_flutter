@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontWeight: FontWeight.w600),
                   ),
                   addHoriztalSpace(6),
-                  Icon(FontAwesomeIcons.whatsapp),
+                  const Icon(FontAwesomeIcons.whatsapp),
                 ],
               );
             },
@@ -108,11 +108,11 @@ class _HomeScreenState extends State<HomeScreen> {
             labelStyle: Constants.customTextStyle(
                 textSize: TextSize.lg, color: Colors.white),
             tabs: [
-              Container(
+              const SizedBox(
                 width: 25,
-                child: const Tab(icon: Icon(Icons.camera_alt_outlined)),
+                child: Tab(icon: Icon(Icons.camera_alt_outlined)),
               ),
-              Container(
+              SizedBox(
                 width: 80,
                 child: Tab(
                   child: Row(
@@ -145,15 +145,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              Container(
+              const SizedBox(
                 width: 85,
-                child: const Tab(
+                child: Tab(
                   text: 'Users',
                 ),
               ),
-              Container(
+              const SizedBox(
                 width: 85,
-                child: const Tab(
+                child: Tab(
                   text: 'Profile',
                 ),
               ),
@@ -172,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 Widget page() {
-  return Column(
+  return const Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Center(

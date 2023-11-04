@@ -41,12 +41,12 @@ class Utils {
           backgroundColor: type == FlasType.success ? Colors.green : Colors.red,
           titleColor: Colors.white,
           messageColor: Colors.white,
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
         )..show(context));
   }
 
   static Widget profileImage(String? imageUrl, {bool isFile = false}) {
-    if(isFile && imageUrl!=null) return Image.file(File(imageUrl??''), fit: BoxFit.cover,);
+    if(isFile && imageUrl!=null) return Image.file(File(imageUrl), fit: BoxFit.cover,);
     if (imageUrl == null || imageUrl == 'default' || imageUrl == '') {
       return Image.asset(
         AssetsName.profileBg,

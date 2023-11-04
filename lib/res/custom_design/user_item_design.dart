@@ -1,5 +1,4 @@
 import 'package:chat_app_flutter/model/user_model.dart';
-import 'package:chat_app_flutter/res/assets_name.dart';
 import 'package:chat_app_flutter/res/components/active_user_design.dart';
 import 'package:chat_app_flutter/res/components/my_shadow.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
@@ -10,7 +9,7 @@ import 'package:chat_app_flutter/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-Widget UserItemDesign({required UserModel userModel, isLastMessage = false}) {
+Widget userItemDesign({required UserModel userModel, isLastMessage = false}) {
   final time = DateCustom().formatTimestampWithTime(
       userModel.lastMessage?.publish ?? DateTime.now().microsecondsSinceEpoch);
   return Padding(

@@ -4,7 +4,7 @@ import 'package:chat_app_flutter/model/chat_model.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class MessageRepository {
-  BaseApiServices _apiServices = NetworkApiServices();
+  final BaseApiServices _apiServices = NetworkApiServices();
   DatabaseReference reference = FirebaseDatabase.instance.ref().child('Chats');
 
   Future<dynamic> setMessage(ChatModel chatModel) async {

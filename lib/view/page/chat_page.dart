@@ -35,7 +35,7 @@ class ChatPage extends StatelessWidget {
                               'otherId': list.values.elementAt(index).id
                             });
                       },
-                      child: UserItemDesign(
+                      child: userItemDesign(
                           userModel: list.values.elementAt(index),
                           isLastMessage: true));
                 },

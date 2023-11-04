@@ -4,13 +4,13 @@ typedef TabClickListener = Function(int index);
 
 class CustomTabBar extends StatefulWidget {
   final TabClickListener tabClickListener;
-  final index;
+  final int index;
 
   const CustomTabBar({Key? key, this.index = 0, required this.tabClickListener})
       : super(key: key);
 
   @override
-  _CustomTabBarState createState() => _CustomTabBarState();
+  State<CustomTabBar> createState() => _CustomTabBarState();
 }
 
 class _CustomTabBarState extends State<CustomTabBar> {
@@ -22,7 +22,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
   @override
   Widget build(BuildContext context) {
     return AnimatedOpacity(
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       opacity: 0.5,
       child: Container(
         height: 50,

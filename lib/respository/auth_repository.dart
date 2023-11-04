@@ -21,9 +21,9 @@ class AuthRepository {
       String email, String password, UserModel userModel) async {
     try {
       User response = await _apiServices.signUpResponse(email, password);
-      print('response id  --- ${response.uid}');
+
       final modelUser = userModel.cloneWithNewId(response.uid);
-      print('modelUser id  --- ${modelUser.id}');
+
       final modelMap = modelUser.toMap();
 
       await _apiServices.setDataResponse(

@@ -38,7 +38,7 @@ class ImageController {
 
     if (pickedFile != null) {
       final selectedImagePath = pickedFile.path;
-      setImageState(selectedImagePath ?? '');
+      setImageState(selectedImagePath);
     }
   }
 

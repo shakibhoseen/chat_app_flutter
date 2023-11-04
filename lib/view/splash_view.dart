@@ -1,7 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chat_app_flutter/res/assets_name.dart';
 import 'package:chat_app_flutter/res/components/my_shadow.dart';
-import 'package:chat_app_flutter/res/components/neu_box.dart';
 import 'package:chat_app_flutter/utils/constants.dart';
 import 'package:chat_app_flutter/utils/helper_widget.dart';
 import 'package:chat_app_flutter/utils/utils.dart';
@@ -21,7 +20,7 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  SplashServices _splashServices = SplashServices();
+  final _splashServices = SplashServices();
   SplashViewModel? _splashViewModel;
 
   @override
@@ -59,7 +58,7 @@ class _SplashViewState extends State<SplashView> {
                       textSize: TextSize.xl, fontWeight: FontWeight.bold),
                 ),
                 addVerticalSpace(10),
-                Icon(
+                const Icon(
                   FontAwesomeIcons.whatsapp,
                   //color: Colors.green.shade600,
                   size: 55,
@@ -67,7 +66,7 @@ class _SplashViewState extends State<SplashView> {
                 addVerticalSpace(30),
 
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.deepPurple.shade50,

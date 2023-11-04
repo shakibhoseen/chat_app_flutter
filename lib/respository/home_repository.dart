@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class HomeRepository {
-  BaseApiServices _apiServices = NetworkApiServices();
+  final BaseApiServices _apiServices = NetworkApiServices();
 
   Future<dynamic> getUserData() async {
     var user = SplashServices.user;
@@ -20,7 +20,7 @@ class HomeRepository {
     try {
       final value = await _apiServices.getDataResponse(reference);
       return value;
-    } on Exception catch (e) {
+    } on Exception {
       rethrow;
     }
   }
